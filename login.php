@@ -1,5 +1,5 @@
 <?php
-    include_once __DIR__ . '/sqlstuff/user_lookup.php';
+    include_once __DIR__ . '/sqlstuff/animeModel.php';
 
     function isPostRequest() {
         return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST');
@@ -21,7 +21,7 @@
                 $_SESSION['username'] = $username; 
                 $_SESSION['loggedIn'] = TRUE; 
                 
-                header('Location: viewMusic.php'); 
+                header('Location: homePage.php'); 
     
             } else {
                 $_SESSION['loggedIn'] = FALSE; 
@@ -69,7 +69,10 @@
             </div>
             <br/>
             <button type="submit" class="btn btn-primary">Log In</button>
+            <br/>
         </form>
+        <br/>
+        <button class="btn btn-primary" onclick="window.location.href='signup.php'">Sign Up</button>
 
     </div>
 </body>
