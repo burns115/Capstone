@@ -8,7 +8,7 @@
     session_start();
 
     if(isPostRequest()){
-        $username = filter_input(INPUT_POST, 'inputUname'); 
+        $username = filter_input(INPUT_POST, 'inputUname');
         $pword = filter_input(INPUT_POST, 'inputPword'); 
     
         $search = getAUser($username); 
@@ -16,12 +16,22 @@
         if ($search != "No user found."){
             $salt = $search['salt'];
             $enc = $search['encPword'];
+            $email = $search['email'];
+            $isAdmin = $search['isAdmin'];
+
     
             if(sha1($pword.$salt) == $enc){//if password and username are correct, redirects to viewPatients.php
                 $_SESSION['username'] = $username; 
-                $_SESSION['loggedIn'] = TRUE; 
-                
-                header('Location: homePage.php'); 
+                $_SESSION['loggedIn'] = TRUE;
+                $_SESSION['email'] = $email;
+                $_SESSION['isAdmin'] = $isAdmin;
+
+                if($_SESSION['isAdmin'] = 1){
+                    header('Location: homePage.php?action=admin'); 
+                }
+                else{
+                    header('Location: homePage.php'); 
+                }
     
             } else {
                 $_SESSION['loggedIn'] = FALSE; 

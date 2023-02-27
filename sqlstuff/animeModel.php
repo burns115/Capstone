@@ -94,8 +94,8 @@
         $result = [];
         $stmt = $db->prepare("SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE animeID=:bAnimeID");
 
-        $binds = array(//adds the music id into an array
-            ":bID" => $musicID
+        $binds = array(//adds the anime id into an array
+            ":bAnimeID" => $animeID
         );
 
         if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
@@ -105,13 +105,28 @@
         return($results);//returns results of search
     }
 
-    function getAUser($username){//used to verify a user
-
+    function getUser($userID){//gets a specific record from the table
         global $db;
 
         $result = [];
+        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt FROM user_lookup WHERE userID=:bUserID");
 
-        $stmt = $db->prepare("SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt FROM user_lookup WHERE username=:bUsername");
+        $binds = array(//adds the user id into an array
+            ":bUserID" => $userID
+        );
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
+            $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        };
+
+        return($results);//returns results of search
+    }
+
+    function getAUser($username){//used to verify a user
+        global $db;
+
+        $result = [];
+        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt FROM user_lookup WHERE username=:bUsername");
 
         $binds = array(//places the username into an array
             ":bUsername" => $username
@@ -127,10 +142,10 @@
         return($results); //returns the result
     }
 
-    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//this function is used to add music into the table
+    function addAUser($email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//this function is used to add music into the table
 
         global $db;
-        $stmt = $db->prepare("INSERT INTO user_lookup SET username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt");
+        $stmt = $db->prepare("INSERT INTO user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt");
 
         $binds = array(//places values into an array
             ":bUsername" => $username,
@@ -150,15 +165,16 @@
         return ($results);//returns results
     }
 
-    function editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//function used to update/edit music info
+    function editAUser($userID, $email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
 
-        $stmt = $db->prepare("UPDATE user_lookup SET username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt WHERE userID = :bUserID");
+        $stmt = $db->prepare("UPDATE user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt WHERE userID = :bUserID");
 
         $binds = array(//places new values into the array
             ":bUserID" => $userID,
+            ":bEmail" => $email,
             ":bUsername" => $username,
             ":bEncPword" => $encPword,
             ":bPhoneNumber" => $phoneNumber,

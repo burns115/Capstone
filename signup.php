@@ -1,4 +1,54 @@
 <?php
+    session_start();
+    include __DIR__ . '/sqlstuff/animeModel.php';
+
+    $error = '';
+    function isPostRequest() {
+        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
+    }
+
+    $email = "";
+
+    $username = "";
+
+    $password = "";
+
+    $phoneNumber = "";
+
+    if (isset($_POST['action'])){
+        $action = filter_input(INPUT_POST, 'action');
+
+        $userID = filter_input(INPUT_POST, 'userID');
+        
+        $email = filter_input(INPUT_POST, 'email');
+        if ($email == "") {
+            $error .= "<li>Enter Email Address</li>";
+        }
+        
+        $username = filter_input(INPUT_POST, 'username');
+        if ($username == "") {
+            $error .= "<li>Enter a Username</li>";
+        }
+        
+        $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
+        if ($phoneNumber == "") {
+            $error .= "<li>Enter a Phone Number</li>";
+        }
+
+        if ($error != "") {
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }
+    }
+
+    if (isPostRequest() AND $action == 'add'){
+
+        var_dump($_POST);
+        $result = addAUser($email, $username, $password, $phoneNumber); 
+
+        header('Location: homePage.php'); 
+
+    }
 
 ?>
 <!DOCTYPE html>
@@ -12,99 +62,62 @@
 <body>
     <div class="container">
 
-        <?php if (($action == 'add') OR (empty($_GET) AND empty($_POST))): ?>
-            <h2>Sign-Up</h2>
-
-        <?php elseif($action == 'edit'): ?> 
-            <h2>Edit Song Information</h2>
-
-        <?php endif; ?>
+        <h2>Sign-Up</h2>
 
         <form class="col-lg-6 offset-lg-3" action = 'editMusic.php' method='post'>
 
             <input type='hidden' name='action' value='<?= $action ?>'>
-            <input type='hidden' name='musicID' value='<?= $musicID ?>'>
+            <input type='hidden' name='animeID' value='<?= $animeID ?>'>
             <br/>
             <div class="form-group">
-                <label class='control-label col-sm-2' for='songTitle'>Song Title:</label>
+                <label class='control-label col-sm-2' for='email'>Email Address:</label>
 
                 <div class='col-sm-10'>
-                    <input type='text' class='form-control' id='songTitle' name='songTitle' value='<?= $songTitle ?>'>
+                    <input type='email' placeholder='Enter Field Here' class='form-control' id='email' name='email' value='<?= $email ?>'required>
+                </div>
+
+                <label class='control-label col-sm-2' for='username'>Username:</label>
+
+                <div class='col-sm-10'>
+                    <input type='text' placeholder='Enter Field Here' class='form-control' id='username' name='username' value='<?= $username ?>'required>
+                </div>
+
+            </div>
+
+            <br/>
+            <div class="form-group">
+                <label class='control-label col-sm-2' for='password'>Password:</label>
+
+                <div class='col-sm-10'>
+                    <input type='password' placeholder='Enter Field Here' class='form-control' id='password' name='password' value='<?= $password ?>'required>
+                </div>
+                
+                <label class='control-label col-sm-2' for=''>Retype Password:</label>
+
+                <div class='col-sm-10'>
+                    <input type='password' placeholder='Enter Field Here' class='form-control' id='genre' name='genre' value='<?= $genre ?>'required>
                 </div>
 
             </div>
             <br/>
             <div class="form-group">
-                <label class='control-label col-sm-2' for='artistName'>Artist Name:</label>
+                <label class='control-label col-sm-2' for='phoneNumber'>Phone Number:</label>
 
                 <div class='col-sm-10'>
-                    <input type='text' class='form-control' id='artistName' name='artistName' value='<?= $artistName ?>'>
+                    <input type='phone' placeholder='Enter Field Here' class='form-control' id='phoneNumber' name='phoneNumber' value='<?= $phoneNumber ?>'required>
                 </div>
 
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='recordCom'>Record Company:</label>
-
-                <div class='col-sm-10'>
-                    <input type='text' class='form-control' id='recordCom' name='recordCom' value='<?= $recordCom ?>'>
-                </div>
-
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='genre'>Genre:</label>
-
-                <div class='col-sm-10'>
-                    <input type='text' class='form-control' id='genre' name='genre' value='<?= $genre ?>'>
-                </div>
-
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='songDuration'>Duration (sec.):</label>
-
-                <div class='col-sm-10'>
-                    <input type='text' class='form-control' id='songDuration' name='songDuration' value='<?= $songDuration ?>'>
-                </div>
-
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='released'>Released:</label>
-
-                <div class='col-sm-10'>
-                <?php if ($released == 1): ?>
-                    <input type="radio" name="released" value="1" checked>Yes <input type="radio" name="released" value="0">No
-
-                <?php elseif($released == 0): ?>
-                    <input type="radio" name="released" value="1">Yes <input type="radio" name="released" value="0" checked>No
-
-                <?php else:?>
-                    <input type="radio" name="released" value="1">Yes <input type="radio" name="released" value="0">No
-
-                <?php endif;?>
-                </div>
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='releaseDate'>Date Released:</label>
-
-                <div class='col-sm-10'>
-                    <input type="date" name="releaseDate" value='<?= $releaseDate ?>'>
-                </div>
             </div>
             <br/>
             <div class='form-group'>
 
                 <div class='col-sm-offset-2 col-sm-10'>
 
-                    <button type="submit" class='btn btn-primary'>Submit</button>
+                    <button type="submit" class='btn btn-primary'>Sign Up</button>
 
                     <?php
-
                         if(isPostRequest()){
-                            echo "Failed to Add Record";
+                            echo "Failed to Create Account";
                         }
                     ?>
                 </div>
