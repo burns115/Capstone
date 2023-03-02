@@ -10,6 +10,7 @@ session_start();
     }
 
     include __DIR__ . '/sqlstuff/animeModel.php';
+    include __DIR__ . '/navbar.php';
 
     $searchTitle = "";
 
@@ -125,24 +126,12 @@ session_start();
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="homePage.php">Animedia</a>
-        <input type="text" placeholder="Search for an Anime..." name="titleInput">
-            
-        <a href="mainpage.php">Watch Later</a>
-        <a href="php_resources.php">Followers</a>
-        <a href="settings.php?action=empty">Settings</a>
-        <a class="logout" href="logout.php">Logout</a>
-    </div>
-
     <div class="mostPopular">
 
     </div>
 
-    <div class="row recently_added_group">
-        <div>
-            <h2 id="recently-added">Recently Added</h2>
-        </div>
+    <div class="row">
+
         <?php foreach ($records as $row): ?>
             <div class="column">
                 <div class="flip-card anime-tiles container mt-3">
@@ -162,7 +151,7 @@ session_start();
                                 <p style="font-size: 15px;"><?php echo $row['genre']; ?></p>
                             </div>
 
-                            <a href='editAnime.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
+                            <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
                         </div>
                     </div>
                 </div>

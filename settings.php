@@ -1,6 +1,8 @@
 <?php
     session_start();
+    print_r($_SESSION);
     include __DIR__ . '/sqlstuff/animeModel.php';
+    include __DIR__ . '/navbar.php';
 
     function isPostRequest() {
         return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
@@ -35,10 +37,14 @@
             </div>
 
             <div class="container options-list">
+                <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                    <h2>Admin Options</h2>
+                    <h3><a href="settings.php?action=changePword">Disable User</a></h3>
+                    <h3><a href="settings.php?action=changeEmail">Edit Anime</a></h3>
+                <?php endif; ?>
+
+
                 <h2>General Options</h2>
-                <?php
-                print_r($_SESSION);
-                ?>
                 <h3><a href="settings.php?action=changePword">Change Password</a></h3>
                 <h3><a href="settings.php?action=changeEmail">Change Email</a></h3>
             </div>
