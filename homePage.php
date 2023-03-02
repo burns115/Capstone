@@ -131,7 +131,6 @@ session_start();
             
         <a href="mainpage.php">Watch Later</a>
         <a href="php_resources.php">Followers</a>
-        <a href="git_resources.php">Albums</a>
         <a href="settings.php?action=empty">Settings</a>
         <a class="logout" href="logout.php">Logout</a>
     </div>

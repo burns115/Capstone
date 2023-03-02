@@ -9,12 +9,10 @@
     if(isset($_GET['action'])){
         $action = filter_input(INPUT_GET, 'action');
         $userID = filter_input(INPUT_GET, 'userID');
-        $username = 
+        $username = filter_input(INPUT_GET, 'username');
 
         if($action == "changeEmail"){
             $row = getAUser($username);
-
-            $email = $row['email'];
         }
     }
 ?>

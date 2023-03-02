@@ -20,16 +20,15 @@
             $isAdmin = $search['isAdmin'];
 
     
-            if(sha1($pword.$salt) == $enc){//if password and username are correct, redirects to viewPatients.php
+            if(sha1($pword.$salt) == $enc){
                 $_SESSION['username'] = $username; 
                 $_SESSION['loggedIn'] = TRUE;
                 $_SESSION['email'] = $email;
                 $_SESSION['isAdmin'] = $isAdmin;
 
-                if($_SESSION['isAdmin'] = 1){
+                if($isAdmin == 1){
                     header('Location: homePage.php?action=admin'); 
-                }
-                else{
+                }else{
                     header('Location: homePage.php'); 
                 }
     
@@ -82,7 +81,7 @@
             <br/>
         </form>
         <br/>
-        <button class="btn btn-primary" onclick="window.location.href='signup.php'">Sign Up</button>
+        <button class="btn btn-primary" onclick="window.location.href='signup.php?action=create'">Sign Up</button>
 
     </div>
 </body>

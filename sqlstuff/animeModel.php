@@ -142,7 +142,7 @@
         return($results); //returns the result
     }
 
-    function addAUser($email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//this function is used to add music into the table
+    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email){//this function is used to add music into the table
 
         global $db;
         $stmt = $db->prepare("INSERT INTO user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt");
@@ -155,7 +155,8 @@
             ":bIsActive" => $isActive,
             ":bIsAdmin" => $isAdmin,
             ":bProfilePic" => $profilePic,
-            ":bSalt" => $salt
+            ":bSalt" => $salt,
+            ":bEmail" => $email
         );
 
         if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
