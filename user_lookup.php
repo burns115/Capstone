@@ -1,3 +1,3 @@
 <?php
-    include (__DIR__ . '/sqlstuff/db.php');
+    include_once (__DIR__ . '/sqlstuff/db.php');
 ?>

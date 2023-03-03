@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include __DIR__ . '/sqlstuff/animeModel.php';
+    include_once __DIR__ . '/sqlstuff/animeModel.php';
 
     $error = "";
     function isPostRequest() {
@@ -46,13 +46,6 @@
         $isActive = 1;
 
         $isAdmin = 0;
-
-        if ($error != "") {
-
-
-            echo "<p class='error'>Please fix the following and resubmit</p>";
-            echo "<ul class='error'>$error</ul>";
-        }
     
     }elseif (isset($_POST['action'])){
         $action = filter_input(INPUT_POST, 'action');
@@ -82,21 +75,21 @@
             $error .= "<li>Enter a Phone Number</li>";
         }
 
-        if ($error != "") {
-
-
-            echo "<p class='error'>Please fix the following and resubmit</p>";
-            echo "<ul class='error'>$error</ul>";
-        }
+        
     }
 
     if (isPostRequest() AND $action == 'create'){
 
-        var_dump($_POST);
-        $result = addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
+        if ($error != "") {
+
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }else{
+            var_dump($_POST);
+        $result = addAUser($username, sha1($encPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
         header('Location: homePage.php'); 
-
+        }
     }
 
 ?>

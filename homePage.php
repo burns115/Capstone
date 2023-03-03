@@ -9,8 +9,8 @@ session_start();
         header('Location: login.php');
     }
 
-    include __DIR__ . '/sqlstuff/animeModel.php';
-    include __DIR__ . '/navbar.php';
+    include_once __DIR__ . '/sqlstuff/animeModel.php';
+    include_once __DIR__ . '/navbar.php';
 
     $searchTitle = "";
 
@@ -19,8 +19,11 @@ session_start();
         $searchTitle = filter_input(INPUT_POST, 'titleInput');
 
         if(isset($_POST['animeID'])){
+
             $animeID = filter_input(INPUT_POST, 'animeID');
-            deleteRecord($animeID);
+
+            deleteAnime();
+
         }
     }
 
@@ -150,8 +153,30 @@ session_start();
                                 <p style="font-size: 15px;"><?php echo $row['rating']; ?></p>
                                 <p style="font-size: 15px;"><?php echo $row['genre']; ?></p>
                             </div>
+                            <div container>
+                                <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                    <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' class="btn text-dark">Edit</a>
+                                <?php else: ?>
+                                    <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' disabled style="display: none;" class="btn text-dark">Edit</a>
+                                <?php endif; ?>
+                                
+                                <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
 
-                            <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
+                                <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                    <form action="homePage.php" method="post">
+                                        <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                        
+                                        <button type="submit" class="btn text-dark">Delete</button>
+                                    </form>
+                                <?php else: ?>
+                                    <form action="homePage.php" method="post">
+                                        <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                        
+                                        <button type="submit" disabled style="display: none;" class="btn text-dark">Delete</button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-    include (__DIR__ . '/db.php');
+include_once (__DIR__ . '/db.php');
 
     function getRecord($animeTitle){ //aquires the records values
         global $db;
@@ -86,6 +86,14 @@
         }
         
         return ($results);//returns table results
+    }
+
+    function deleteAnime() {
+
+        if (confirm("Are you sure you want to Delete?") == true) {
+            
+            deleteRecord($animeID);
+        }
     }
 
     function getARecord($animeID){//gets a specific record from the table
