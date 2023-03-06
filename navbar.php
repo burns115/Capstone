@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <title>Document</title>
 
     <style>
@@ -24,8 +25,7 @@
             <button type="submit" class="btn text-dark">Search</button>
         </form>
             
-        <a href="mainpage.php">Watch Later</a>
-        <a href="php_resources.php">Followers</a>
+        <a href="social.php">Social</a>
         <a href="settings.php?action=empty">Settings</a>
         <a class="logout" href="logout.php">Logout</a>
     </div>

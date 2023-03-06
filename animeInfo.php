@@ -175,9 +175,9 @@
         <div class="form-group">
             <div class='col-sm-10'>
                 <?php if ( $action == 'view'): ?>
-                    <input type='text' readonly class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
+                    <input type='number' readonly class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
                 <?php else: ?>
-                    <input type='text' class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
+                    <input type='number' class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
                 <?php endif; ?>
             </div>
         </div>

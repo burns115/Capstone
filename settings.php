@@ -3,6 +3,11 @@
     include_once __DIR__ . '/navbar.php';
     session_start();
     print_r($_SESSION);
+
+    function isPostRequest() {
+        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
+    }
+    
     if(isset($_GET['action'])){
         $action = filter_input(INPUT_GET, 'action');
         $userID = filter_input(INPUT_GET, 'userID');
@@ -10,6 +15,82 @@
 
         if($action == "changeEmail"){
             $row = getAUser($username);
+        }elseif($action == "changePword"){
+            $row = getAUser($username);
+        }
+    }
+
+    $error = '';
+
+    if(isset($_GET['action']) AND $action == 'updateEmail'){
+
+        $action = filter_input(INPUT_GET, 'action');
+        $userID = filter_input(INPUT_GET, 'userID');
+
+        $email = filter_input(INPUT_POST, 'email');
+        if ($email == "") {
+            $error .= "<li>Enter New Email Address</li>";
+        }
+        
+    }elseif(isset($_GET['action']) AND $action == 'updatePword'){
+
+        $action = filter_input(INPUT_GET, 'action');
+        $userID = filter_input(INPUT_GET, 'userID');
+
+        $encPword = filter_input(INPUT_POST, 'encPword');
+        $pwordValid = filter_input(INPUT_POST, 'pwordValid');
+        if ($encPword == "") {
+            $error .= "<li>Enter a valid Password</li>";
+        }elseif ($pwordValid != $encPword){
+            $error .= "<li>Passwords do not Match</li>";
+        }
+        
+    }elseif (isset($_POST['action']) AND $action == 'updateEmail'){
+        $action = filter_input(INPUT_POST, 'action');
+
+        $userID = filter_input(INPUT_POST, 'userID');
+        
+        $email = filter_input(INPUT_POST, 'email');
+        if ($email == "") {
+            $error .= "<li>Enter New Email Address</li>";
+        }
+
+    }elseif (isset($_POST['action']) AND $action == 'updatePword'){
+        $action = filter_input(INPUT_POST, 'action');
+
+        $userID = filter_input(INPUT_POST, 'userID');
+
+        $encPword = filter_input(INPUT_POST, 'encPword');
+        $pwordValid = filter_input(INPUT_POST, 'pwordValid');
+        if ($encPword == "") {
+            $error .= "<li>Enter a valid Password</li>";
+        }elseif ($pwordValid != $encPword){
+            $error .= "<li>Passwords do not Match</li>";
+        }
+    }
+
+    if (isPostRequest() AND $action == 'updateEmail'){
+
+        if ($error != "") {
+
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }else{
+
+        $result = editAUser($email); 
+
+        header('Location: login.php'); 
+        }
+    }elseif (isPostRequest() AND $action == 'updatePword'){
+        if ($error != "") {
+
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }else{
+
+        $result = editAUser($userID, $encPword); 
+
+        header('Location: login.php'); 
         }
     }
         
@@ -56,12 +137,23 @@
                     </form>
 
                 <?php elseif($action == 'changeEmail'): ?> 
-                    <form method='POST' action='changeEmail'>
+                    <form method='POST' action='settings.php?action=updateEmail'>
+                        <input type='hidden' name='action' value='<?= $action ?>'>
+                        <input type='hidden' name='userID' value='<?= $userID ?>'>
+                
                         <h1>Change Email Address</h1>
 
                         <p>Current Email: <?= $_SESSION['email'] ?> </p>
 
-                        <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter New Email...">
+                        <input type='email' placeholder='Enter New Email Here' class='form-control' id='email' name='email' value='<?= $email ?>'>
+
+                        <button type="submit" class='btn btn-primary'>Submit</button>
+
+                        <?php
+                            if(isPostRequest()){
+                                echo "Failed to Update Email";
+                            }
+                        ?>
                     </form>
 
                 <?php elseif($action == 'add'): ?> 

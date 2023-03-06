@@ -26,6 +26,30 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns search results
     }
 
+    function getUser($username){//gets a specific record from the table
+        global $db;
+
+        $sql = "SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email FROM user_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($username != ""){// if song title value is not empty then add the values
+            $sql .= " AND username LIKE :bUsername";
+            $binds['bUsername'] = '%' . $username . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
     function addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL){//this function is used to add music into the table
 
         global $db;
@@ -75,7 +99,7 @@ include_once (__DIR__ . '/db.php');
         global $db;
         
         $results = "Data was not deleted";
-        $stmt = $db->prepare("DELETE FROM music WHERE animeID=:bAnimeID");
+        $stmt = $db->prepare("DELETE FROM anime_lookup WHERE animeID=:bAnimeID");
         
         $binds = array(
             ":bAnimeID" => $animeID
@@ -88,13 +112,7 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns table results
     }
 
-    function deleteAnime() {
-
-        if (confirm("Are you sure you want to Delete?") == true) {
-            
-            deleteRecord($animeID);
-        }
-    }
+    
 
     function getARecord($animeID){//gets a specific record from the table
         global $db;
@@ -109,23 +127,6 @@ include_once (__DIR__ . '/db.php');
         if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
             $results = $stmt->fetch(PDO::FETCH_ASSOC);
         }
-
-        return($results);//returns results of search
-    }
-
-    function getUser($userID){//gets a specific record from the table
-        global $db;
-
-        $result = [];
-        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt FROM user_lookup WHERE userID=:bUserID");
-
-        $binds = array(//adds the user id into an array
-            ":bUserID" => $userID
-        );
-
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
-            $results = $stmt->fetch(PDO::FETCH_ASSOC);
-        };
 
         return($results);//returns results of search
     }

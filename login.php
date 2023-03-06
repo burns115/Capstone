@@ -18,6 +18,7 @@
             $enc = $search['encPword'];
             $email = $search['email'];
             $isAdmin = $search['isAdmin'];
+            $pronouns = $search['pronouns'];
 
     
             if(sha1($pword.$salt) == $enc){
@@ -25,6 +26,8 @@
                 $_SESSION['loggedIn'] = TRUE;
                 $_SESSION['email'] = $email;
                 $_SESSION['isAdmin'] = $isAdmin;
+                $_SESSION['pronouns'] = $pronouns;
+                $_SESSION['encPword'] = $encPword;
 
                 if($isAdmin == 1){
                     header('Location: homePage.php?action=admin'); 
@@ -68,7 +71,7 @@
 
         <form method='post' action='login.php'>
             <div>
-                <label for="inputUname" class="form-label">Username/Email</label>
+                <label for="inputUname" class="form-label">Username</label>
                 <input type="text" class="form-control" id="inputUname" name='inputUname'>
             </div>
             <br/>

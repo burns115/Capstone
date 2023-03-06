@@ -19,11 +19,8 @@ session_start();
         $searchTitle = filter_input(INPUT_POST, 'titleInput');
 
         if(isset($_POST['animeID'])){
-
             $animeID = filter_input(INPUT_POST, 'animeID');
-
-            deleteAnime();
-
+            deleteRecord($animeID);
         }
     }
 
@@ -129,9 +126,6 @@ session_start();
     </style>
 </head>
 <body>
-    <div class="mostPopular">
-
-    </div>
 
     <div class="row">
 
@@ -174,6 +168,8 @@ session_start();
                                         
                                         <button type="submit" disabled style="display: none;" class="btn text-dark">Delete</button>
                                     </form>
+
+                                    
                                 <?php endif; ?>
                             </div>
                             
