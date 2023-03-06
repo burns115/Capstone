@@ -128,8 +128,31 @@ session_start();
 <body>
 
     <div class="row">
+        <div class="filters">
+            <form action="/action_page.php">
+                <p>Genres:</p>
+                <input type="checkbox" id="Action" name="Action" value="Action">
+                <label for="Action">Action</label><br>
+                <input type="checkbox" id="Comedy" name="Comedy" value="Comedy">
+                <label for="Comedy">Comedy</label><br>
+                <input type="checkbox" id="Supernatural" name="Supernatural" value="Supernatural">
+                <label for="Supernatural">Supernatural</label>
 
+                <br><br>
+
+                <p>Ratings:</p>
+                <label for="h2l">High -> Low</label>
+                <input type="radio" id="h2l" name="rating" value="h2l"><br>
+                
+                <label for="l2h">Low -> High</label>
+                <input type="radio" id="l2h" name="rating" value="l2h"><br>
+
+                <input type="submit" value="Submit">
+            </form> 
+
+        </div>
         <?php foreach ($records as $row): ?>
+
             <div class="column">
                 <div class="flip-card anime-tiles container mt-3">
                     <div class="flip-card-inner">

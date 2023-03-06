@@ -7,91 +7,102 @@
     function isPostRequest() {
         return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
     }
+
+    $error = "";
     
     if(isset($_GET['action'])){
         $action = filter_input(INPUT_GET, 'action');
         $userID = filter_input(INPUT_GET, 'userID');
-        $username = filter_input(INPUT_GET, 'username');
+    
 
-        if($action == "changeEmail"){
-            $row = getAUser($username);
-        }elseif($action == "changePword"){
-            $row = getAUser($username);
+        if($action == "update"){
+            $row = getUser($userID);
+
+            $username = $row['username'];
+
+            $encPword = $row['encPword'];
+
+            $phoneNumber = $row['phoneNumber'];
+
+            $pronouns = $row['pronouns'];
+
+            $isActive = $row['isActive'];
+
+            $isAdmin = $row['isAdmin'];
+
+            $profilePic = $row['profilePic'];
+
+            $salt = $row['salt'];
+
+            $email = $row['email'];
+
+        }else{
+            $username = filter_input(INPUT_POST, 'username');
+
+            $encPword = filter_input(INPUT_POST, 'encPword');
+            if ($encPword == "") {
+                $error .= "<li>Enter New Password</li>";
+            }
+            
+            $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
+
+            $pronouns = filter_input(INPUT_POST, 'pronouns');
+            
+            $isActive = filter_input(INPUT_POST, 'isActive');
+            
+            $isAdmin = filter_input(INPUT_POST, 'isAdmin');
+
+            $profilePic = filter_input(INPUT_POST, 'profilePic');
+
+            $salt = filter_input(INPUT_POST, 'salt');
+
+            $email = filter_input(INPUT_POST, 'email');
+            if ($email == "") {
+                $error .= "<li>Enter New Email</li>";
+            }
         }
-    }
 
-    $error = '';
-
-    if(isset($_GET['action']) AND $action == 'updateEmail'){
-
-        $action = filter_input(INPUT_GET, 'action');
-        $userID = filter_input(INPUT_GET, 'userID');
-
-        $email = filter_input(INPUT_POST, 'email');
-        if ($email == "") {
-            $error .= "<li>Enter New Email Address</li>";
-        }
-        
-    }elseif(isset($_GET['action']) AND $action == 'updatePword'){
-
-        $action = filter_input(INPUT_GET, 'action');
-        $userID = filter_input(INPUT_GET, 'userID');
-
-        $encPword = filter_input(INPUT_POST, 'encPword');
-        $pwordValid = filter_input(INPUT_POST, 'pwordValid');
-        if ($encPword == "") {
-            $error .= "<li>Enter a valid Password</li>";
-        }elseif ($pwordValid != $encPword){
-            $error .= "<li>Passwords do not Match</li>";
-        }
-        
-    }elseif (isset($_POST['action']) AND $action == 'updateEmail'){
+    } elseif (isset($_POST['action'])){
         $action = filter_input(INPUT_POST, 'action');
 
         $userID = filter_input(INPUT_POST, 'userID');
         
+        $username = filter_input(INPUT_POST, 'username');
+        
+        $encPword = filter_input(INPUT_POST, 'encPword');
+        if ($encPword == "") {
+            $error .= "<li>Enter a New Password</li>";
+        }
+        
+        $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
+
+        $pronouns = filter_input(INPUT_POST, 'pronouns');
+        
+        $isActive = filter_input(INPUT_POST, 'isActive');
+        
+        $isAdmin = filter_input(INPUT_POST, 'isAdmin');
+
+        $profilePic = filter_input(INPUT_POST, 'profilePic');
+
+        $salt = filter_input(INPUT_POST, 'salt');
+
         $email = filter_input(INPUT_POST, 'email');
         if ($email == "") {
-            $error .= "<li>Enter New Email Address</li>";
-        }
-
-    }elseif (isset($_POST['action']) AND $action == 'updatePword'){
-        $action = filter_input(INPUT_POST, 'action');
-
-        $userID = filter_input(INPUT_POST, 'userID');
-
-        $encPword = filter_input(INPUT_POST, 'encPword');
-        $pwordValid = filter_input(INPUT_POST, 'pwordValid');
-        if ($encPword == "") {
-            $error .= "<li>Enter a valid Password</li>";
-        }elseif ($pwordValid != $encPword){
-            $error .= "<li>Passwords do not Match</li>";
+            $error .= "<li>Enter a New Email</li>";
         }
     }
 
-    if (isPostRequest() AND $action == 'updateEmail'){
-
+    if (isPostRequest() AND $action == 'update'){
         if ($error != "") {
-
-            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<p class='error'>Fix the following and resubmit</p>";
             echo "<ul class='error'>$error</ul>";
-        }else{
+        }else {
+            var_dump($_POST);
+            $result = editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
-        $result = editAUser($email); 
-
-        header('Location: login.php'); 
+            header('Location: login.php'); 
         }
-    }elseif (isPostRequest() AND $action == 'updatePword'){
-        if ($error != "") {
 
-            echo "<p class='error'>Please fix the following and resubmit</p>";
-            echo "<ul class='error'>$error</ul>";
-        }else{
-
-        $result = editAUser($userID, $encPword); 
-
-        header('Location: login.php'); 
-        }
     }
         
 ?>
@@ -112,6 +123,8 @@
             <div class="profile-info">
 
             </div>
+            
+            <?php var_dump($_POST); ?>
 
             <div class="container options-list">
                 <?php if ( $_SESSION['isAdmin'] == 1): ?>
@@ -137,10 +150,10 @@
                     </form>
 
                 <?php elseif($action == 'changeEmail'): ?> 
-                    <form method='POST' action='settings.php?action=updateEmail'>
+                    <form method='POST' action='settings.php?action=update'>
                         <input type='hidden' name='action' value='<?= $action ?>'>
                         <input type='hidden' name='userID' value='<?= $userID ?>'>
-                
+
                         <h1>Change Email Address</h1>
 
                         <p>Current Email: <?= $_SESSION['email'] ?> </p>

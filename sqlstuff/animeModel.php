@@ -26,6 +26,30 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns search results
     }
 
+    function filterRating($animeTitle){ //aquires the records values
+        global $db;
+
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE rating ";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($animeTitle != ""){// if song title value is not empty then add the values
+            $sql .= " AND animeTitle LIKE :bAnimeTitle";
+            $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
     function getUser($username){//gets a specific record from the table
         global $db;
 
