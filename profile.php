@@ -14,11 +14,15 @@
     {
         $action = filter_input(INPUT_GET, 'action');
         $userID = filter_input(INPUT_GET, 'userID');
-    
+        
 
         if($action == "view" OR $action == "edit")
         {
             $row = getProfile($userID);
+
+            print_r($row);
+
+            echo gettype($row['username']);
 
             $username = $row['username'];
 
@@ -67,7 +71,7 @@
     {
         $action = filter_input(INPUT_POST, 'action');
 
-        $animeID = filter_input(INPUT_POST, 'animeID');
+        $userID = filter_input(INPUT_POST, 'userID');
         
         $username = filter_input(INPUT_POST, 'username');
 
@@ -102,7 +106,7 @@
         {
             $result = editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
-            header('Location: settings.php');
+            header('Location: profile.php?action=view');
         }
     }
 ?>
@@ -131,13 +135,30 @@
                 <?php else: ?>
                     <input type='text' class='form-control' id='username' name='username' placeholder='Enter Username Here...' value='<?= $username ?>'>
                 <?php endif; ?>
-
-                <h3><?= $pronouns ?></h3>
+                
+                <?php if ( $action == 'view'): ?>
+                    <h3><?= $pronouns ?></h3>
+                <?php else: ?>
+                    <input type='text' class='form-control' id='pronouns' name='pronouns' placeholder='Enter Pronouns Here...' value='<?= $pronouns ?>'>
+                <?php endif; ?>
 
                 <?php if ($isAdmin == 1): ?>
-                    <h3>Admin Member</h3>
+                    <h3>Admin</h3>
                 <?php elseif ($isAdmin == 0): ?>
                     <h3>Basic Member</h3>
+                <?php endif; ?>
+
+                <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>
+                    <?php if ($isAdmin == 1): ?>
+                        <input type="radio" name="isAdmin" value="1" checked>Admin <input type="radio" name="isAdmin" value="0">Basic Member
+
+                    <?php elseif($isAdmin == 0): ?>
+                        <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0" checked>Basic Member
+
+                    <?php else:?>
+                        <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0">Basic Member
+
+                    <?php endif;?>
                 <?php endif; ?>
                     
                 <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>

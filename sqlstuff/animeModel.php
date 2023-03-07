@@ -231,7 +231,7 @@ include_once (__DIR__ . '/db.php');
         global $db;
 
         $result = [];
-        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt FROM user_lookup WHERE userID=:bUserID");
+        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic,salt FROM user_lookup WHERE userID=:bUserID");
 
         $binds = array(//places the userID into an array
             ":bUserID" => $userID
