@@ -1,18 +1,14 @@
 <?php 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
     include_once __DIR__ . '/navbar.php';
-
-    function isPostRequest() {
-        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
-    } 
     session_start();
-    print_r($_SESSION);
 
-    if(isPostRequest()){
+    if(isPostRequest())
+    {
+        $searchUser = filter_input(INPUT_POST, 'userInput');
 
-        $searchUser = filter_input(INPUT_POST, 'usernameInput');
-
-        if(isset($_POST['userID'])){
+        if(isset($_POST['userID']))
+        {
             $userID = filter_input(INPUT_POST, 'userID');
             disableUser($userID);
         }
@@ -59,7 +55,7 @@
         .card a {
         text-decoration: none;
         font-size: 18px;
-        color: black;
+        color: white;
         }
 
         .card button:hover, a:hover {
@@ -74,6 +70,10 @@
     </style>
 </head>
 <body>
+    <form method='post' action='social.php'>
+        <input type="text" placeholder="Search for a User..." name="userInput">
+        <button type="submit" class="btn text-dark">Search</button>
+    </form>
     <div class="row">
         <?php foreach ($records as $row): ?>
             <div class="column">
@@ -85,10 +85,12 @@
                             </br>
                         <?php endif; ?>
                     </p>
-                    <p><button>Follow</button></p>
+                    <p><button><a href='profile.php?action=view&userID=<?=$row['userID']?>' class="btn text-dark">View Profile</a></button></p>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+
+
 </body>
 </html>

@@ -2,7 +2,13 @@
 
 include_once (__DIR__ . '/db.php');
 
-    function getRecord($animeTitle){ //aquires the records values
+    function isPostRequest() 
+    {
+        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
+    }
+
+    function getRecord($animeTitle)
+    { //aquires the records values
         global $db;
 
         $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
@@ -11,7 +17,8 @@ include_once (__DIR__ . '/db.php');
 
         $binds = [];
 
-        if ($animeTitle != ""){// if song title value is not empty then add the values
+        if ($animeTitle != "")
+        {// if song title value is not empty then add the values
             $sql .= " AND animeTitle LIKE :bAnimeTitle";
             $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
             
@@ -19,23 +26,26 @@ include_once (__DIR__ . '/db.php');
 
         $stmt = $db->prepare($sql);
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
             $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
         }
 
         return ($results);//returns search results
     }
 
-    function filterRating($animeTitle){ //aquires the records values
+    function filterRatingH2L($animeTitle)
+    { //aquires the records values
         global $db;
 
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE rating ";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup ORDER BY rating DESC";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
         $binds = [];
 
-        if ($animeTitle != ""){// if song title value is not empty then add the values
+        if ($animeTitle != "")
+        {// if song title value is not empty then add the values
             $sql .= " AND animeTitle LIKE :bAnimeTitle";
             $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
             
@@ -43,14 +53,42 @@ include_once (__DIR__ . '/db.php');
 
         $stmt = $db->prepare($sql);
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
             $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
         }
 
         return ($results);//returns search results
     }
 
-    function getUser($username){//gets a specific record from the table
+    function filterRatingL2H($animeTitle){ //aquires the records values
+        global $db;
+
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup ORDER BY rating ASC";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($animeTitle != "")
+        {// if song title value is not empty then add the values
+            $sql .= " AND animeTitle LIKE :bAnimeTitle";
+            $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
+    function getUser($username)
+    {//gets a specific record from the table
         global $db;
 
         $sql = "SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email FROM user_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
@@ -59,7 +97,8 @@ include_once (__DIR__ . '/db.php');
 
         $binds = [];
 
-        if ($username != ""){// if song title value is not empty then add the values
+        if ($username != "")
+        {// if song title value is not empty then add the values
             $sql .= " AND username LIKE :bUsername";
             $binds['bUsername'] = '%' . $username . '%'; 
             
@@ -67,14 +106,16 @@ include_once (__DIR__ . '/db.php');
 
         $stmt = $db->prepare($sql);
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
             $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
         }
 
         return ($results);//returns search results
     }
 
-    function addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL){//this function is used to add music into the table
+    function addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL)
+    {//this function is used to add music into the table
 
         global $db;
         $stmt = $db->prepare("INSERT INTO anime_lookup SET animeTitle = :bAnimeTitle, rating = :bRating, lang = :bLang, genre = :bGenre, animeDesc = :bAnimeDesc, picURL = :bPicURL");
@@ -88,14 +129,16 @@ include_once (__DIR__ . '/db.php');
             ":bPicURL" => $picURL
         );
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
             $results = "Data added.";
         }
 
         return ($results);//returns results
     }
 
-    function editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL){//function used to update/edit music info
+    function editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL)
+    {//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
@@ -112,14 +155,16 @@ include_once (__DIR__ . '/db.php');
             ":bPicURL" => $picURL
         );
 
-        if ($stmt->execute($binds) AND $stmt->rowCount() > 0){
+        if ($stmt->execute($binds) AND $stmt->rowCount() > 0)
+        {
             $results = "Data updated";
         }
 
         return ($results);//returns updated values
     }
 
-    function deleteRecord ($animeID) {//deletes music from the table
+    function deleteRecord ($animeID) 
+    {//deletes music from the table
         global $db;
         
         $results = "Data was not deleted";
@@ -129,7 +174,8 @@ include_once (__DIR__ . '/db.php');
             ":bAnimeID" => $animeID
         );
         
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0) 
+        {
             $results = 'Data Deleted';
         }
         
@@ -138,7 +184,8 @@ include_once (__DIR__ . '/db.php');
 
     
 
-    function getARecord($animeID){//gets a specific record from the table
+    function getARecord($animeID)
+    {//gets a specific record from the table
         global $db;
 
         $result = [];
@@ -148,14 +195,16 @@ include_once (__DIR__ . '/db.php');
             ":bAnimeID" => $animeID
         );
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0)
+        {
             $results = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         return($results);//returns results of search
     }
 
-    function getAUser($username){//used to verify a user
+    function getAUser($username)
+    {//used to verify a user
         global $db;
 
         $result = [];
@@ -165,17 +214,43 @@ include_once (__DIR__ . '/db.php');
             ":bUsername" => $username
         );
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0) {//if the username is active then it will allow login
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0) 
+        {//if the username is active then it will allow login
             $results = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        } else{
+        } else
+        {
             $results = "No user found.";//if username is not valid it will prompt an error
         }
 
         return($results); //returns the result
     }
 
-    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email){//this function is used to add music into the table
+    function getProfile($userID)
+    {
+        global $db;
+
+        $result = [];
+        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt FROM user_lookup WHERE userID=:bUserID");
+
+        $binds = array(//places the userID into an array
+            ":bUserID" => $userID
+        );
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0) 
+        {//if the username is active then it will allow login
+            $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        } else
+        {
+            $results = "No user found.";//if username is not valid it will prompt an error
+        }
+
+        return($results); //returns the result
+    }
+
+    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email)
+    {//this function is used to add music into the table
 
         global $db;
         $stmt = $db->prepare("INSERT INTO user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt");
@@ -192,14 +267,16 @@ include_once (__DIR__ . '/db.php');
             ":bEmail" => $email
         );
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0 ){
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
             $results = "Data added.";
         }
 
         return ($results);//returns results
     }
 
-    function editAUser($userID, $email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt){//function used to update/edit music info
+    function editAUser($userID, $email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt)
+    {//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
@@ -219,7 +296,8 @@ include_once (__DIR__ . '/db.php');
             ":bSalt" => $salt
         );
 
-        if ($stmt->execute($binds) AND $stmt->rowCount() > 0){
+        if ($stmt->execute($binds) AND $stmt->rowCount() > 0)
+        {
             $results = "Data updated";
         }
 

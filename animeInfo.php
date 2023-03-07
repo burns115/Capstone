@@ -1,11 +1,8 @@
 <?php 
     session_start();
 
-    function isPostRequest() {
-        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
-    }
-
-    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn'])){
+    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn']))
+    {
         header('Location: login.php');
     }
 
@@ -13,12 +10,14 @@
     include_once __DIR__ . '/navbar.php';
     $error = "";
 
-    if(isset($_GET['action'])){
+    if(isset($_GET['action']))
+    {
         $action = filter_input(INPUT_GET, 'action');
         $animeID = filter_input(INPUT_GET, 'animeID');
     
 
-        if($action == "edit" OR $action == "view"){
+        if($action == "edit" OR $action == "view")
+        {
             $row = getARecord($animeID);
 
             $animeTitle = $row['animeTitle'];
@@ -33,90 +32,110 @@
 
             $picURL = $row['picURL'];
 
-        }else{
+        }else
+        {
             $animeTitle = filter_input(INPUT_POST, 'animeTitle');
-            if ($animeTitle == "") {
+            if ($animeTitle == "") 
+            {
                 $error .= "<li>Enter the Anime Title</li>";
             }   
 
             $rating = filter_input(INPUT_POST, 'rating');
-            if ($rating == "") {
+            if ($rating == "") 
+            {
                 $error .= "<li>Enter the Rating</li>";
             }
             
             $lang = filter_input(INPUT_POST, 'lang');
-            if ($lang == "") {
+            if ($lang == "") 
+            {
                 $error .= "<li>Select the Langauge(s)</li>";
             }
 
             $genre = filter_input(INPUT_POST, 'genre');
-            if ($genre == "") {
+            if ($genre == "") 
+            {
                 $error .= "<li>Select the Genre(s)</li>";
             }
             
             $animeDesc = filter_input(INPUT_POST, 'animeDesc');
-            if ($animeDesc == "") {
+            if ($animeDesc == "") 
+            {
                 $error .= "<li>Enter the Description</li>";
             }
             
             $picURL = filter_input(INPUT_POST, 'picURL');
-            if ($picURL == "") {
+            if ($picURL == "") 
+            {
                 $error .= "<li>Enter the Picture URL</li>";
             }
         }
 
-    } elseif (isset($_POST['action'])){
+    } elseif (isset($_POST['action']))
+    {
         $action = filter_input(INPUT_POST, 'action');
 
         $animeID = filter_input(INPUT_POST, 'animeID');
         
         $animeTitle = filter_input(INPUT_POST, 'animeTitle');
-        if ($animeTitle == "") {
+        if ($animeTitle == "") 
+        {
             $error .= "<li>Enter the Anime Title</li>";
         }
         
         $rating = filter_input(INPUT_POST, 'rating');
-        if ($rating == "") {
+        if ($rating == "") 
+        {
             $error .= "<li>Enter the Rating</li>";
         }
         
         $lang = filter_input(INPUT_POST, 'lang');
-        if ($lang == "") {
+        if ($lang == "") 
+        {
             $error .= "<li>Selects the Langauge(s)</li>";
         }
 
         $genre = filter_input(INPUT_POST, 'genre');
-        if ($genre == "") {
+        if ($genre == "") 
+        {
             $error .= "<li>Selects the Genre(s)</li>";
         }
         
         $animeDesc = filter_input(INPUT_POST, 'animeDesc');
-        if ($animeDesc == "") {
+        if ($animeDesc == "") 
+        {
             $error .= "<li>Enter the Description</li>";
         }
         
         $picURL = filter_input(INPUT_POST, 'picURL');
-        if ($picURL == "") {
+        if ($picURL == "") 
+        {
             $error .= "<li>Enter the Picture URL</li>";
         }
     }
 
-    if (isPostRequest() AND $action == 'add'){
-        if ($error != "") {
+    if (isPostRequest() AND $action == 'add')
+    {
+        if ($error != "") 
+        {
             echo "<p class='error'>Please fix the following and resubmit</p>";
             echo "<ul class='error'>$error</ul>";
-        }else {
+        }else 
+        {
             var_dump($_POST);
             $result = addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL); 
 
             header('Location: homepage.php'); 
         }
 
-    } elseif (isPostRequest() AND $action == 'edit'){
-        if ($error != "") {
+    } elseif (isPostRequest() AND $action == 'edit')
+    {
+        if ($error != "") 
+        {
             echo "<p class='error'>Please fix the following and resubmit</p>";
             echo "<ul class='error'>$error</ul>";
-        }else {
+        }else 
+        {
             $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL); 
 
             header('Location: homepage.php');

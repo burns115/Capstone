@@ -4,19 +4,17 @@
     session_start();
     print_r($_SESSION);
 
-    function isPostRequest() {
-        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
-    }
-
     $error = "";
     
-    if(isset($_GET['action'])){
+    if(isset($_GET['action']))
+    {
         $action = filter_input(INPUT_GET, 'action');
         $userID = filter_input(INPUT_GET, 'userID');
     
 
-        if($action == "update"){
-            $row = getUser($userID);
+        if($action == "update")
+        {
+            $row = getProfile($userID);
 
             $username = $row['username'];
 
@@ -36,11 +34,13 @@
 
             $email = $row['email'];
 
-        }else{
+        }else
+        {
             $username = filter_input(INPUT_POST, 'username');
 
             $encPword = filter_input(INPUT_POST, 'encPword');
-            if ($encPword == "") {
+            if ($encPword == "") 
+            {
                 $error .= "<li>Enter New Password</li>";
             }
             
@@ -57,12 +57,14 @@
             $salt = filter_input(INPUT_POST, 'salt');
 
             $email = filter_input(INPUT_POST, 'email');
-            if ($email == "") {
+            if ($email == "") 
+            {
                 $error .= "<li>Enter New Email</li>";
             }
         }
 
-    } elseif (isset($_POST['action'])){
+    } elseif (isset($_POST['action']))
+    {
         $action = filter_input(INPUT_POST, 'action');
 
         $userID = filter_input(INPUT_POST, 'userID');
@@ -70,7 +72,8 @@
         $username = filter_input(INPUT_POST, 'username');
         
         $encPword = filter_input(INPUT_POST, 'encPword');
-        if ($encPword == "") {
+        if ($encPword == "") 
+        {
             $error .= "<li>Enter a New Password</li>";
         }
         
@@ -87,16 +90,20 @@
         $salt = filter_input(INPUT_POST, 'salt');
 
         $email = filter_input(INPUT_POST, 'email');
-        if ($email == "") {
+        if ($email == "") 
+        {
             $error .= "<li>Enter a New Email</li>";
         }
     }
 
-    if (isPostRequest() AND $action == 'update'){
-        if ($error != "") {
+    if (isPostRequest() AND $action == 'update')
+    {
+        if ($error != "") 
+        {
             echo "<p class='error'>Fix the following and resubmit</p>";
             echo "<ul class='error'>$error</ul>";
-        }else {
+        }else 
+        {
             var_dump($_POST);
             $result = editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
@@ -118,18 +125,23 @@
 </head>
 <body>
     <div>
+        <?php var_dump($_POST); ?>
         <div class="container settings-page">
 
             <div class="profile-info">
-
+                <h1><?= $_SESSION['username'] ?></h1>
+                <h3><?= $_SESSION['pronouns'] ?></h3>
+                <?php if ($_SESSION['isAdmin'] == 1): ?>
+                    <h3>Admin Member</h3>
+                <?php elseif ($_SESSION['isAdmin'] == 0): ?>
+                    <h3>Basic Member</h3>
+                <?php endif; ?>
             </div>
-            
-            <?php var_dump($_POST); ?>
 
             <div class="container options-list">
                 <?php if ( $_SESSION['isAdmin'] == 1): ?>
                     <h2>Admin Options</h2>
-                    <h3><a href="settings.php?action=disableUser">Disable User</a></h3>
+                    <h3><a href="settings.php?action=disableUser">Edit User</a></h3>
                     <h3><a href="settings.php?action=add">Add Anime</a></h3>
                 <?php endif; ?>
 
@@ -158,7 +170,7 @@
 
                         <p>Current Email: <?= $_SESSION['email'] ?> </p>
 
-                        <input type='email' placeholder='Enter New Email Here' class='form-control' id='email' name='email' value='<?= $email ?>'>
+                        <input type='email' placeholder='Enter New Email' class='form-control' id='email' name='email' value='<?= $email ?>'>
 
                         <button type="submit" class='btn btn-primary'>Submit</button>
 

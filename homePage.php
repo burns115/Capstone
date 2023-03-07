@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-    function isPostRequest() {
-        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
-    }
-
-    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn'])){
+    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn']))
+    {
         header('Location: login.php');
     }
 
@@ -14,11 +11,13 @@ session_start();
 
     $searchTitle = "";
 
-    if(isPostRequest()){
+    if(isPostRequest())
+    {
 
         $searchTitle = filter_input(INPUT_POST, 'titleInput');
 
-        if(isset($_POST['animeID'])){
+        if(isset($_POST['animeID']))
+        {
             $animeID = filter_input(INPUT_POST, 'animeID');
             deleteRecord($animeID);
         }
@@ -38,18 +37,21 @@ session_start();
     <title>Document</title>
 
     <style>
-        .navbar {
+        .navbar 
+        {
             padding-left : 5%;
             padding-right : 5%;
         }
 
-        .flip-card {
+        .flip-card 
+        {
         background-color: transparent;
         width: 200px;
         height: 250px;
         }
 
-        .flip-card-inner {
+        .flip-card-inner 
+        {
         position: relative;
         width: 100%;
         height: 100%;
@@ -59,11 +61,13 @@ session_start();
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         }
 
-        .flip-card:hover .flip-card-inner {
+        .flip-card:hover .flip-card-inner 
+        {
         transform: rotateY(180deg);
         }
 
-        .flip-card-front, .flip-card-back {
+        .flip-card-front, .flip-card-back 
+        {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -71,27 +75,32 @@ session_start();
         backface-visibility: hidden;
         }
 
-        .flip-card-front {
+        .flip-card-front 
+        {
         background-color: #bbb;
         color: black;
         }
 
-        .flip-card-back {
+        .flip-card-back 
+        {
         background-color: black;
         color: white;
         transform: rotateY(180deg);
         }
 
-        * {
+        * 
+        {
         box-sizing: border-box;
         }
 
-        body {
+        body 
+        {
         font-family: Arial, Helvetica, sans-serif;
         }
 
         /* Float four columns side by side */
-        .column {
+        .column 
+        {
         float: left;
         width: 25%;
         padding: 0 10px;
@@ -101,14 +110,16 @@ session_start();
         .row {margin: 0 -5px;}
 
         /* Clear floats after the columns */
-        .row:after {
+        .row:after 
+        {
         content: "";
         display: table;
         clear: both;
         }
 
         /* Style the counter cards */
-        .card {
+        .card 
+        {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
         padding: 16px;
         text-align: center;
@@ -116,12 +127,14 @@ session_start();
         }
 
         /* Responsive columns - one column layout (vertical) on small screens */
-        @media screen and (max-width: 600px) {
-        .column {
-            width: 100%;
-            display: block;
-            margin-bottom: 20px;
-        }
+        @media screen and (max-width: 600px) 
+        {
+            .column 
+            {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -129,7 +142,7 @@ session_start();
 
     <div class="row">
         <div class="filters">
-            <form action="/action_page.php">
+            <form action="homePage.php" >
                 <p>Genres:</p>
                 <input type="checkbox" id="Action" name="Action" value="Action">
                 <label for="Action">Action</label><br>

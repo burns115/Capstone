@@ -11,7 +11,8 @@
     <title>Document</title>
 
     <style>
-        .navbar {
+        .navbar 
+        {
             padding-left : 5%;
             padding-right : 5%;
         }
