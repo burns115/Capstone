@@ -20,10 +20,6 @@
         {
             $row = getProfile($userID);
 
-            print_r($row);
-
-            echo gettype($row['username']);
-
             $username = $row['username'];
 
             $encPword = $row['encPword'];
@@ -106,7 +102,7 @@
         {
             $result = editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
-            header('Location: profile.php?action=view');
+            header('Location: social.php');
         }
     }
 ?>
@@ -124,7 +120,7 @@
     <form class="col-lg-6 offset-lg-3" action = 'profile.php' method='post'>
 
         <input type='hidden' name='action' value='<?= $action ?>'>
-        <input type='hidden' name='animeID' value='<?= $userID ?>'>
+        <input type='hidden' name='userID' value='<?= $userID ?>'>
         <br/>
         <div class="form-group">
 

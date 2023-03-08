@@ -227,26 +227,22 @@ include_once (__DIR__ . '/db.php');
     }
 
     function getProfile($userID)
-    {
+    {//gets a specific record from the table
         global $db;
 
         $result = [];
-        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic,salt FROM user_lookup WHERE userID=:bUserID");
+        $stmt = $db->prepare("SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email FROM user_lookup WHERE userID=:bUserID");
 
-        $binds = array(//places the userID into an array
+        $binds = array(//adds the anime id into an array
             ":bUserID" => $userID
         );
 
-        if ($stmt->execute($binds) && $stmt->rowCount() > 0) 
-        {//if the username is active then it will allow login
-            $results = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        } else
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0)
         {
-            $results = "No user found.";//if username is not valid it will prompt an error
+            $results = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
-        return($results); //returns the result
+        return($results);//returns results of search
     }
 
     function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email)
@@ -275,17 +271,16 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns results
     }
 
-    function editAUser($userID, $email, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt)
+    function editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email)
     {//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
 
-        $stmt = $db->prepare("UPDATE user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt WHERE userID = :bUserID");
+        $stmt = $db->prepare("UPDATE user_lookup SET username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt, email = :bEmail WHERE userID = :bUserID");
 
         $binds = array(//places new values into the array
             ":bUserID" => $userID,
-            ":bEmail" => $email,
             ":bUsername" => $username,
             ":bEncPword" => $encPword,
             ":bPhoneNumber" => $phoneNumber,
@@ -293,7 +288,8 @@ include_once (__DIR__ . '/db.php');
             ":bIsActive" => $isActive,
             ":bIsAdmin" => $isAdmin,
             ":bProfilePic" => $profilePic,
-            ":bSalt" => $salt
+            ":bSalt" => $salt,
+            ":bEmail" => $email
         );
 
         if ($stmt->execute($binds) AND $stmt->rowCount() > 0)

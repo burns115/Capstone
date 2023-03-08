@@ -17,6 +17,7 @@
             $email = $search['email'];
             $isAdmin = $search['isAdmin'];
             $pronouns = $search['pronouns'];
+            $userID = $search['userID'];
 
     
             if(sha1($pword.$salt) == $enc)
@@ -27,6 +28,7 @@
                 $_SESSION['isAdmin'] = $isAdmin;
                 $_SESSION['pronouns'] = $pronouns;
                 $_SESSION['encPword'] = $encPword;
+                $_SESSION['userID'] = $userID;
 
                 if($isAdmin == 1)
                 {
