@@ -161,25 +161,25 @@
         <div class="form-group">
 
             <div class='col-sm-10'>
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
                 <?php else: ?>
                     <input type='text' class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
                 <?php endif; ?>
                     
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='lang' name='lang' placeholder='Language' value='<?= $lang ?>'>
                 <?php else: ?>
                     <input type='text' class='form-control' id='lang' name='lang' placeholder='Language' value='<?= $lang ?>'>
                 <?php endif; ?>
 
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
                 <?php else: ?>
                     <input type='text' class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
                 <?php endif; ?>
 
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='picURL' name='picURL' placeholder='Picture URL Here' value='<?= $picURL ?>'>
                 <?php else: ?>
                     <input type='text' class='form-control' id='picURL' name='picURL' placeholder='Picture URL Here' value='<?= $picURL ?>'>
@@ -193,7 +193,7 @@
         <br/>
         <div class="form-group">
             <div class='col-sm-10'>
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='number' readonly class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
                 <?php else: ?>
                     <input type='number' class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
@@ -205,7 +205,7 @@
 
             <div class='col-sm-10'>
 
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <textarea type='text' readonly class='form-control' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'> <?= $animeDesc ?> </textarea>
                 <?php else: ?>
                     <textarea type='text' class='form-control' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></textarea>
@@ -219,7 +219,7 @@
         <div class='form-group'>
 
             <div class='col-sm-offset-2 col-sm-10'>
-                <?php if ( $action == 'view'): ?>
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <button type="submit" disabled style="display: none;" class='btn btn-primary'>Submit</button>
                 <?php else: ?>
                     <button type="submit" class='btn btn-primary'>Submit</button>

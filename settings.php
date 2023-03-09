@@ -41,17 +41,26 @@
             $username = filter_input(INPUT_POST, 'username');
 
             $encPword = filter_input(INPUT_POST, 'encPword');
+            $oldPword = filter_input(INPUT_POST, 'oldPword');
             $newPword = filter_input(INPUT_POST, 'newPword');
             $pwordValid = filter_input(INPUT_POST, 'pwordValid');
-            if ($newPword == "") 
+            if ($oldPword == "") 
             {
-                $error .= "<li>Enter a valid Password</li>";
+                $error .= "<li>Enter Current Password</li>";
+                
+            }elseif (sha1($oldPword) != $encPword)
+            {
+                $error .= "<li>Incorrect Password Entered</li>";
+
+            }elseif ($newPword == "")
+            {
+                $error .= "<li>Enter New Password</li>";
 
             }elseif ($pwordValid != $newPword)
             {
                 $error .= "<li>Passwords do not Match</li>";
 
-            }elseif ($encPword == $newPword)
+            }elseif ($oldPword == $newPword)
             {
                 $error .= "<li>Previous Password Entered. Please enter a New Password</li>";
             }
@@ -74,71 +83,87 @@
                 $error .= "<li>Enter New Email</li>";
             }
         }
-
-    } elseif (isset($_POST['action']) AND $action == "updatePword")
+  
+    }elseif (isset($_POST['action']))
     {
         $action = filter_input(INPUT_POST, 'action');
 
-        $userID = filter_input(INPUT_POST, 'userID');
-        
-        $username = filter_input(INPUT_POST, 'username');
-        
-        $encPword = filter_input(INPUT_POST, 'encPword');
-        $newPword = filter_input(INPUT_POST, 'newPword');
-        $pwordValid = filter_input(INPUT_POST, 'pwordValid');
-        if ($newPword == "") 
+        $animeID = filter_input(INPUT_POST, 'animeID');
+
+        if ($action == "updatePword")
         {
-            $error .= "<li>Enter a valid Password</li>";
+            $action = filter_input(INPUT_POST, 'action');
 
-        }elseif ($pwordValid != $newPword)
+            $userID = filter_input(INPUT_POST, 'userID');
+            
+            $username = filter_input(INPUT_POST, 'username');
+            
+            $encPword = filter_input(INPUT_POST, 'encPword');
+            $oldPword = filter_input(INPUT_POST, 'oldPword');
+            $newPword = filter_input(INPUT_POST, 'newPword');
+            $pwordValid = filter_input(INPUT_POST, 'pwordValid');
+            if ($oldPword == "") 
+            {
+                $error .= "<li>Enter Current Password</li>";
+
+            }elseif (sha1($oldPword) != $encPword)
+            {
+                $error .= "<li>Incorrect Password Entered</li>";
+
+            }elseif ($newPword == "")
+            {
+                $error .= "<li>Enter New Password</li>";
+
+            }elseif ($pwordValid != $newPword)
+            {
+                $error .= "<li>Passwords do not Match</li>";
+
+            }elseif ($oldPword == $newPword)
+            {
+                $error .= "<li>Previous Password Entered. Please enter a New Password</li>";
+            }
+            
+            $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
+
+            $pronouns = filter_input(INPUT_POST, 'pronouns');
+            
+            $isActive = filter_input(INPUT_POST, 'isActive');
+            
+            $isAdmin = filter_input(INPUT_POST, 'isAdmin');
+
+            $profilePic = filter_input(INPUT_POST, 'profilePic');
+
+            $salt = filter_input(INPUT_POST, 'salt');
+
+            $email = filter_input(INPUT_POST, 'email');
+
+        }elseif ($action == "updateEmail")
         {
-            $error .= "<li>Passwords do not Match</li>";
+            $action = filter_input(INPUT_POST, 'action');
 
-        }elseif ($encPword == $newPword)
-        {
-            $error .= "<li>Previous Password Entered. Please enter a New Password</li>";
-        }
-        
-        $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
+            $userID = filter_input(INPUT_POST, 'userID');
+            
+            $username = filter_input(INPUT_POST, 'username');
+            
+            $encPword = filter_input(INPUT_POST, 'encPword');
+            
+            $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
 
-        $pronouns = filter_input(INPUT_POST, 'pronouns');
-        
-        $isActive = filter_input(INPUT_POST, 'isActive');
-        
-        $isAdmin = filter_input(INPUT_POST, 'isAdmin');
+            $pronouns = filter_input(INPUT_POST, 'pronouns');
+            
+            $isActive = filter_input(INPUT_POST, 'isActive');
+            
+            $isAdmin = filter_input(INPUT_POST, 'isAdmin');
 
-        $profilePic = filter_input(INPUT_POST, 'profilePic');
+            $profilePic = filter_input(INPUT_POST, 'profilePic');
 
-        $salt = filter_input(INPUT_POST, 'salt');
+            $salt = filter_input(INPUT_POST, 'salt');
 
-        $email = filter_input(INPUT_POST, 'email');
-
-    }elseif (isset($_POST['action']) AND $action == "updateEmail")
-    {
-        $action = filter_input(INPUT_POST, 'action');
-
-        $userID = filter_input(INPUT_POST, 'userID');
-        
-        $username = filter_input(INPUT_POST, 'username');
-        
-        $encPword = filter_input(INPUT_POST, 'encPword');
-        
-        $phoneNumber = filter_input(INPUT_POST, 'phoneNumber');
-
-        $pronouns = filter_input(INPUT_POST, 'pronouns');
-        
-        $isActive = filter_input(INPUT_POST, 'isActive');
-        
-        $isAdmin = filter_input(INPUT_POST, 'isAdmin');
-
-        $profilePic = filter_input(INPUT_POST, 'profilePic');
-
-        $salt = filter_input(INPUT_POST, 'salt');
-
-        $email = filter_input(INPUT_POST, 'email');
-        if ($email == "") 
-        {
-            $error .= "<li>Enter a New Email</li>";
+            $email = filter_input(INPUT_POST, 'email');
+            if ($email == "") 
+            {
+                $error .= "<li>Enter a New Email</li>";
+            }
         }
     }
 
@@ -164,8 +189,9 @@
             echo "<ul class='error'>$error</ul>";
         }else 
         {
+            //$encPword == $newPword;
             var_dump($_POST);
-            $result = editAUser($userID, $username, sha1($encPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
+            $result = editAUser($userID, $username, sha1($newPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
             header('Location: login.php'); 
         }
@@ -200,7 +226,7 @@
             <div class="container options-list">
                 <?php if ( $_SESSION['isAdmin'] == 1): ?>
                     <h2>Admin Options</h2>
-                    <h3><a href="settings.php?action=disableUser">Edit User</a></h3>
+                    <h3><a href="social.php">Edit User</a></h3>
                     <h3><a href="settings.php?action=add">Add Anime</a></h3>
                 <?php endif; ?>
 
@@ -220,6 +246,7 @@
                         <input type='hidden' name='action' value='<?= $action ?>'>
                         <input type='hidden' name='userID' value='<?= $userID ?>'>
                         <input type='hidden' name='username' value='<?= $username ?>'>
+                        <input type='hidden' name='encPword' value='<?= $encPword ?>'>
                         <input type='hidden' name='email' value='<?= $email ?>'>
                         <input type='hidden' name='phoneNumber' value='<?= $phoneNumber ?>'>
                         <input type='hidden' name='pronouns' value='<?= $pronouns ?>'>
@@ -230,11 +257,16 @@
 
                         <h1>Change Password</h1>
 
-                        <p>Enter Current Password: <?= $_SESSION['email'] ?> </p>
+                        <label for="currentPword" class="form-label">Enter Current Password:</label>
+                        <input type='password' class='form-control' id='oldPword' name='oldPword'><br><br>
+                        
+                        <label for="newPword" class="form-label">Enter New Password:</label>
+                        <input type='password' class='form-control' id='newPword' name='newPword'><br><br>
 
-                        <input type='password' placeholder='Enter New Password' class='form-control' id='password' name='password' onfocus="this.value=''" value='<?= $encPword ?>'>
+                        <label for="pwordValid" class="form-label">Retype New Password:</label>
+                        <input type='password' class='form-control' id='pwordValid' name='pwordValid'><br><br>
 
-                        <input type='password' placeholder='Retype New Password' class='form-control' id='pwordValid' name='pwordValid' value='<?= $pwordValid ?>'>
+                        <button type="submit" class='btn btn-primary'>Change Password</button>
                     </form>
 
                 <?php elseif($action == 'updateEmail'): ?> 
@@ -254,7 +286,7 @@
 
                         <p>Current Email: <?= $_SESSION['email'] ?> </p>
 
-                        <input type='email' placeholder='Enter New Email' class='form-control' id='email' name='email' onfocus="this.value=''" value='<?= $email ?>'>
+                        <input type='email' placeholder='Enter New Email' class='form-control' id='email' name='email'>
 
                         <button type="submit" class='btn btn-primary'>Submit</button>
 

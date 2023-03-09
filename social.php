@@ -85,6 +85,12 @@
                             </br>
                         <?php endif; ?>
                     </p>
+                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                        <p><button><a href='profile.php?action=edit&userID=<?=$row['userID']?>' class="btn text-dark">Edit</a></button></p>
+                    <?php else: ?>
+                        <p style="display: none;"><button><a href='profile.php?action=edit&userID=<?=$row['userID']?>' disabled class="btn text-dark">Edit</a></button></p>
+                    <?php endif; ?>
+
                     <p><button><a href='profile.php?action=view&userID=<?=$row['userID']?>' class="btn text-dark">View Profile</a></button></p>
                 </div>
             </div>
