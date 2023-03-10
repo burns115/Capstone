@@ -136,6 +136,7 @@
             echo "<ul class='error'>$error</ul>";
         }else 
         {
+            var_dump($_POST);
             $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL); 
 
             header('Location: homepage.php');
@@ -161,6 +162,8 @@
         <div class="form-group">
 
             <div class='col-sm-10'>
+
+                <?=var_dump($_POST);?>
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
                 <?php else: ?>
@@ -176,7 +179,12 @@
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
                 <?php else: ?>
-                    <input type='text' class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
+                    <input type="checkbox" id="genre" name="genre" value="Action">
+                    <label for="Action">Action</label>
+                    <input type="checkbox" id="genre" name="genre" value="Comedy">
+                    <label for="Comedy">Comedy</label>
+                    <input type="checkbox" id="genre" name="genre" value="Supernatural">
+                    <label for="Supernatural">Supernatural</label>
                 <?php endif; ?>
 
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>

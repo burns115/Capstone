@@ -10,11 +10,16 @@ session_start();
     include_once __DIR__ . '/navbar.php';
 
     $searchTitle = "";
+    $ratingFilter = "";
+    $genreSelect = "";
+    echo print_r($genreSelect);
 
     if(isPostRequest())
     {
-
+        
         $searchTitle = filter_input(INPUT_POST, 'titleInput');
+        $ratingFilter = filter_input(INPUT_POST, 'ratingFilter');
+        $genreSelect = filter_input(INPUT_POST, 'genreSelect');
 
         if(isset($_POST['animeID']))
         {
@@ -22,8 +27,24 @@ session_start();
             deleteRecord($animeID);
         }
     }
+    
+    if ($ratingFilter == "" AND $genreSelect == "")
+    {
+        $records = getRecord($searchTitle);
 
-    $records = getRecord($searchTitle);
+    }elseif ($ratingFilter == 1)
+    {
+        $records = filterRatingH2L($searchTitle);
+
+    }elseif ($ratingFilter == 0)
+    {
+        $records = filterRatingL2H($searchTitle);
+
+    }elseif ($genreSelect != "")
+    {
+        $records = getGenre($genre);
+    }
+
 
 ?>
 <!DOCTYPE html>
@@ -142,28 +163,30 @@ session_start();
 
     <div class="row">
         <div class="filters">
-            <form action="homePage.php" >
+            <form action="homePage.php" method="POST">
+
                 <p>Genres:</p>
-                <input type="checkbox" id="Action" name="Action" value="Action">
+                <input type="checkbox" id="genre" name="genreSelect" value="Action">
                 <label for="Action">Action</label><br>
-                <input type="checkbox" id="Comedy" name="Comedy" value="Comedy">
+                <input type="checkbox" id="genre" name="genreSelect" value="Comedy">
                 <label for="Comedy">Comedy</label><br>
-                <input type="checkbox" id="Supernatural" name="Supernatural" value="Supernatural">
+                <input type="checkbox" id="genre" name="genreSelect" value="Supernatural">
                 <label for="Supernatural">Supernatural</label>
 
                 <br><br>
 
                 <p>Ratings:</p>
-                <label for="h2l">High -> Low</label>
-                <input type="radio" id="h2l" name="rating" value="h2l"><br>
+                <label for="ratingFilter">High -> Low</label>
+                <input type="radio" name="ratingFilter" value="1"><br>
                 
-                <label for="l2h">Low -> High</label>
-                <input type="radio" id="l2h" name="rating" value="l2h"><br>
+                <label for="ratingFilter">Low -> High</label>
+                <input type="radio" name="ratingFilter" value="0"><br>
 
-                <input type="submit" value="Submit">
+                <input type="submit" value="Apply">
             </form> 
 
         </div>
+        <?=var_dump($_POST);?>
         <?php foreach ($records as $row): ?>
 
             <div class="column">

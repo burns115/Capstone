@@ -10,7 +10,7 @@ include_once (__DIR__ . '/db.php');
     function getRecord($animeTitle)
     { //aquires the records values
         global $db;
-
+        
         $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
 
         $results = [];
@@ -21,6 +21,33 @@ include_once (__DIR__ . '/db.php');
         {// if song title value is not empty then add the values
             $sql .= " AND animeTitle LIKE :bAnimeTitle";
             $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
+    function getGenre($animeTitle)
+    { //aquires the records values
+        global $db;
+        
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE genreSelect = genre";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($genre != "")
+        {// if song title value is not empty then add the values
+            $sql .= " AND genre LIKE :bGenre";
+            $binds['bGenre'] = '%' . $genre . '%'; 
             
         }
 
