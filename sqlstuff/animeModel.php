@@ -11,7 +11,61 @@ include_once (__DIR__ . '/db.php');
     { //aquires the records values
         global $db;
         
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($animeTitle != "")
+        {// if song title value is not empty then add the values
+            $sql .= " AND animeTitle LIKE :bAnimeTitle";
+            $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
+    function mostPopular($animeTitle)
+    { //aquires the records values
+        global $db;
+        
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup ORDER BY rating DESC";//selects the values from the patients table and sets it as a variable
+
+        $results = [];
+
+        $binds = [];
+
+        if ($animeTitle != "")
+        {// if song title value is not empty then add the values
+            $sql .= " AND animeTitle LIKE :bAnimeTitle";
+            $binds['bAnimeTitle'] = '%' . $animeTitle . '%'; 
+            
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
+        {
+            $results = $stmt->fetchall(PDO::FETCH_ASSOC);//adds search results in variable $results
+        }
+
+        return ($results);//returns search results
+    }
+
+    function recentAdd($animeTitle)
+    { //aquires the records values
+        global $db;
+        
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup ORDER BY dateAdded DESC";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -38,7 +92,7 @@ include_once (__DIR__ . '/db.php');
     { //aquires the records values
         global $db;
         
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE genreSelect = genre";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE genreSelect = genre";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -65,7 +119,7 @@ include_once (__DIR__ . '/db.php');
     { //aquires the records values
         global $db;
 
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup ORDER BY rating DESC";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup ORDER BY rating DESC";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -91,7 +145,7 @@ include_once (__DIR__ . '/db.php');
     function filterRatingL2H($animeTitle){ //aquires the records values
         global $db;
 
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup ORDER BY rating ASC";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup ORDER BY rating ASC";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -141,11 +195,11 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns search results
     }
 
-    function addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL)
+    function addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded)
     {//this function is used to add music into the table
 
         global $db;
-        $stmt = $db->prepare("INSERT INTO anime_lookup SET animeTitle = :bAnimeTitle, rating = :bRating, lang = :bLang, genre = :bGenre, animeDesc = :bAnimeDesc, picURL = :bPicURL");
+        $stmt = $db->prepare("INSERT INTO anime_lookup SET animeTitle = :bAnimeTitle, rating = :bRating, lang = :bLang, genre = :bGenre, animeDesc = :bAnimeDesc, picURL = :bPicURL, dateAdded = :bDateAdded");
 
         $binds = array(//places values into an array
             ":bAnimeTitle" => $animeTitle,
@@ -153,7 +207,8 @@ include_once (__DIR__ . '/db.php');
             ":bLang" => $lang,
             ":bGenre" => $genre,
             ":bAnimeDesc" => $animeDesc,
-            ":bPicURL" => $picURL
+            ":bPicURL" => $picURL,
+            ":bDateAdded" => $dateAdded
         );
 
         if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
@@ -164,13 +219,13 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns results
     }
 
-    function editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL)
+    function editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded)
     {//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
 
-        $stmt = $db->prepare("UPDATE anime_lookup SET animeTitle = :bAnimeTitle, rating = :bRating, lang = :bLang, genre = :bGenre, animeDesc = :bAnimeDesc, picURL = :bPicURL WHERE animeID = :bAnimeID");
+        $stmt = $db->prepare("UPDATE anime_lookup SET animeTitle = :bAnimeTitle, rating = :bRating, lang = :bLang, genre = :bGenre, animeDesc = :bAnimeDesc, picURL = :bPicURL, dateAdded = :bDateAdded WHERE animeID = :bAnimeID");
 
         $binds = array(//places new values into the array
             ":bAnimeID" => $animeID,
@@ -179,7 +234,8 @@ include_once (__DIR__ . '/db.php');
             ":bLang" => $lang,
             ":bGenre" => $genre,
             ":bAnimeDesc" => $animeDesc,
-            ":bPicURL" => $picURL
+            ":bPicURL" => $picURL,
+            ":bDateAdded" => $dateAdded
         );
 
         if ($stmt->execute($binds) AND $stmt->rowCount() > 0)
@@ -216,7 +272,7 @@ include_once (__DIR__ . '/db.php');
         global $db;
 
         $result = [];
-        $stmt = $db->prepare("SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL FROM anime_lookup WHERE animeID=:bAnimeID");
+        $stmt = $db->prepare("SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE animeID=:bAnimeID");
 
         $binds = array(//adds the anime id into an array
             ":bAnimeID" => $animeID

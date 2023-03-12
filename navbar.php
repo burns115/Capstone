@@ -21,7 +21,7 @@
 <body>
     <div class="navbar">
         <a href="homePage.php">Animedia</a>
-        <form method='post' action='homepage.php'>
+        <form method='post' action='results.php'>
             <input type="text" placeholder="Search for an Anime..." name="titleInput">
             <button type="submit" class="btn text-dark">Search</button>
         </form>

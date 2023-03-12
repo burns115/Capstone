@@ -27,23 +27,9 @@ session_start();
             deleteRecord($animeID);
         }
     }
-    
-    if ($ratingFilter == "" AND $genreSelect == "")
-    {
-        $records = getRecord($searchTitle);
 
-    }elseif ($ratingFilter == 1)
-    {
-        $records = filterRatingH2L($searchTitle);
-
-    }elseif ($ratingFilter == 0)
-    {
-        $records = filterRatingL2H($searchTitle);
-
-    }elseif ($genreSelect != "")
-    {
-        $records = getGenre($genre);
-    }
+    $mostPopular = mostPopular($searchTitle);
+    $recentAdd = recentAdd($searchTitle);
 
 
 ?>
@@ -63,7 +49,7 @@ session_start();
             padding-left : 5%;
             padding-right : 5%;
         }
-
+        
         .flip-card 
         {
         background-color: transparent;
@@ -161,9 +147,9 @@ session_start();
 </head>
 <body>
 
-    <div class="row">
+    <div class="container">
         <div class="filters">
-            <form action="homePage.php" method="POST">
+            <form action="results.php" method="POST">
 
                 <p>Genres:</p>
                 <input type="checkbox" id="genre" name="genreSelect" value="Action">
@@ -187,56 +173,113 @@ session_start();
 
         </div>
         <?=var_dump($_POST);?>
-        <?php foreach ($records as $row): ?>
 
-            <div class="column">
-                <div class="flip-card anime-tiles container mt-3">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="<?php echo $row['picURL']; ?>" alt="Card image" style="height:100%; width:100%;">
-                        </div>
-                        <div class="flip-card-back">
-                            <br/>
-                            <div>
-                                <h4><?php echo $row['animeTitle']; ?></h4>
-                            </div>
-                            <br/>
-                            <div>
-                                <p style="font-size: 15px;"><?php echo $row['lang']; ?></p>
-                                <p style="font-size: 15px;"><?php echo $row['rating']; ?></p>
-                                <p style="font-size: 15px;"><?php echo $row['genre']; ?></p>
-                            </div>
-                            <div container>
-                                <?php if ( $_SESSION['isAdmin'] == 1): ?>
-                                    <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' class="btn text-dark">Edit</a>
-                                <?php else: ?>
-                                    <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' disabled style="display: none;" class="btn text-dark">Edit</a>
-                                <?php endif; ?>
-                                
-                                <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
-
-                                <?php if ( $_SESSION['isAdmin'] == 1): ?>
-                                    <form action="homePage.php" method="post">
-                                        <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+        <div class="container">
+            <div class="container most-popular">
+                <h2>Most Popular</h2>
+                <?php foreach ($mostPopular as $row): ?>
+                    <div class="column">
+                        <div class="flip-card anime-tiles container mt-3">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="<?php echo $row['picURL']; ?>" alt="Card image" style="height:100%; width:100%;">
+                                </div>
+                                <div class="flip-card-back">
+                                    <br/>
+                                    <div>
+                                        <h4><?php echo $row['animeTitle']; ?></h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <p style="font-size: 15px;"><?php echo $row['lang']; ?></p>
+                                        <p style="font-size: 15px;"><?php echo $row['rating']; ?></p>
+                                        <p style="font-size: 15px;"><?php echo $row['genre']; ?></p>
+                                    </div>
+                                    <div container>
+                                        <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                            <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' class="btn text-dark">Edit</a>
+                                        <?php else: ?>
+                                            <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' disabled style="display: none;" class="btn text-dark">Edit</a>
+                                        <?php endif; ?>
                                         
-                                        <button type="submit" class="btn text-dark">Delete</button>
-                                    </form>
-                                <?php else: ?>
-                                    <form action="homePage.php" method="post">
-                                        <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
-                                        
-                                        <button type="submit" disabled style="display: none;" class="btn text-dark">Delete</button>
-                                    </form>
+                                        <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
 
+                                        <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                            <form action="homePage.php" method="post">
+                                                <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                                
+                                                <button type="submit" class="btn text-dark">Delete</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <form action="homePage.php" method="post">
+                                                <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                                
+                                                <button type="submit" disabled style="display: none;" class="btn text-dark">Delete</button>
+                                            </form>
+
+                                            
+                                        <?php endif; ?>
+                                    </div>
                                     
-                                <?php endif; ?>
+                                </div>
                             </div>
-                            
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
+            <div class="container recently-added">
+                <h2>Recently Added</h2>
+                <?php foreach ($recentAdd as $row): ?>
+                    <div class="column">
+                        <div class="flip-card anime-tiles container mt-3">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="<?php echo $row['picURL']; ?>" alt="Card image" style="height:100%; width:100%;">
+                                </div>
+                                <div class="flip-card-back">
+                                    <br/>
+                                    <div>
+                                        <h4><?php echo $row['animeTitle']; ?></h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <p style="font-size: 15px;"><?php echo $row['lang']; ?></p>
+                                        <p style="font-size: 15px;"><?php echo $row['rating']; ?></p>
+                                        <p style="font-size: 15px;"><?php echo $row['genre']; ?></p>
+                                    </div>
+                                    <div container>
+                                        <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                            <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' class="btn text-dark">Edit</a>
+                                        <?php else: ?>
+                                            <a href='animeInfo.php?action=edit&animeID=<?=$row['animeID']?>' disabled style="display: none;" class="btn text-dark">Edit</a>
+                                        <?php endif; ?>
+                                        
+                                        <a href='animeInfo.php?action=view&animeID=<?=$row['animeID']?>' class="btn text-dark">More Info</a>
+
+                                        <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                                            <form action="homePage.php" method="post">
+                                                <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                                
+                                                <button type="submit" class="btn text-dark">Delete</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <form action="homePage.php" method="post">
+                                                <input type="hidden" name="animeID" value="<?= $row['animeID'] ?>" />
+                                                
+                                                <button type="submit" disabled style="display: none;" class="btn text-dark">Delete</button>
+                                            </form>
+
+                                            
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
     </div>
 
 </body>

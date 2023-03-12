@@ -32,6 +32,8 @@
 
             $picURL = $row['picURL'];
 
+            $dateAdded = $row['dateAdded'];
+
         }else
         {
             $animeTitle = filter_input(INPUT_POST, 'animeTitle');
@@ -69,6 +71,8 @@
             {
                 $error .= "<li>Enter the Picture URL</li>";
             }
+
+            $dateAdded = date('Y-m-d');
         }
 
     } elseif (isset($_POST['action']))
@@ -112,6 +116,8 @@
         {
             $error .= "<li>Enter the Picture URL</li>";
         }
+
+        $dateAdded = filter_input(INPUT_POST, 'dateAdded');
     }
 
     if (isPostRequest() AND $action == 'add')
@@ -123,9 +129,9 @@
         }else 
         {
             var_dump($_POST);
-            $result = addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL); 
+            $result = addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded); 
 
-            header('Location: homepage.php'); 
+            header('Location: homePage.php'); 
         }
 
     } elseif (isPostRequest() AND $action == 'edit')
@@ -137,7 +143,7 @@
         }else 
         {
             var_dump($_POST);
-            $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL); 
+            $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picUR, $dateAdded); 
 
             header('Location: homepage.php');
         }
@@ -164,6 +170,13 @@
             <div class='col-sm-10'>
 
                 <?=var_dump($_POST);?>
+
+                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
+                    <input type="date" style="display: none;" value ="<?= $dateAdded ?>">
+                <?php else: ?> 
+                    <p type="date" value ="<?= $dateAdded ?>"><?= $dateAdded ?></p>
+                <?php endif; ?>
+
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type='text' readonly class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
                 <?php else: ?>
@@ -202,9 +215,9 @@
         <div class="form-group">
             <div class='col-sm-10'>
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='number' readonly class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
+                    <input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57' readonly class='form-control' name='rating' placeholder='rating' value='<?= $rating ?>'>
                 <?php else: ?>
-                    <input type='number' class='form-control' id='rating' name='rating' placeholder='rating' value='<?= $rating ?>'>
+                    <input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57 event.charCode == 32' class='form-control' name='rating' placeholder='rating' value='<?= $rating ?>'>
                 <?php endif; ?>
             </div>
         </div>
