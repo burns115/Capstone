@@ -143,7 +143,7 @@
         }else 
         {
             var_dump($_POST);
-            $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picUR, $dateAdded); 
+            $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded); 
 
             header('Location: homepage.php');
         }
@@ -157,89 +157,118 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="stylesheet.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chathura:wght@400;700&display=swap" rel="stylesheet">
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
+    <script src="https://cdn.tiny.cloud/1/e8ysbaw5rm2qyll3i804mdm2ssjaco823ewrv66f8wnvbwam/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
+    <header>
+        <a href="homePage.php" class="logo">Animedia</a>
+        <div class="group">
+            <ul class="navigation">
+                <li><a href="homePage.php">Home</a></li>
+                <li><a href="social.php">Social</a></li>
+                <li><a href="settings.php?action=empty">Settings</a></li>
+                <li><a href="logout.php">Log Out</a></li>
+            </ul>
+
+            <div class="search">
+                <span class="icon"><form method='post' action='results.php'>
+                    <ion-icon name="search-outline" class="searchBtn"></ion-icon>
+                    <ion-icon name="close-outline" class="closeBtn"></ion-icon>
+                </form></span>
+            </div>
+
+            <ion-icon name="menu-outline" class="menuToggle"></ion-icon>
+
+        </div>
+        <form class="searchBox" method='post' action='results.php'>
+            <input type="text" placeholder="Search for an Anime..." name="titleInput">
+        </form>
+    </header>
+    <br><br>
 
     <form class="col-lg-6 offset-lg-3" action = 'animeInfo.php' method='post'>
 
         <input type='hidden' name='action' value='<?= $action ?>'>
         <input type='hidden' name='animeID' value='<?= $animeID ?>'>
         <br/>
-        <div class="form-group">
+        <div id="anime">
 
-            <div class='col-sm-10'>
+            <div class='top'>
 
-                <?=var_dump($_POST);?>
 
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type="date" style="display: none;" value ="<?= $dateAdded ?>">
                 <?php else: ?> 
-                    <p type="date" value ="<?= $dateAdded ?>"><?= $dateAdded ?></p>
+                    <p type="date" style="display: none;" value ="<?= $dateAdded ?>"><?= $dateAdded ?></p>
                 <?php endif; ?>
 
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='text' readonly class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
+                    <h2 class='form-control' id='animeTitle' name='animeTitle' value='<?= $animeTitle ?>'><?= $animeTitle ?></h2>
                 <?php else: ?>
                     <input type='text' class='form-control' id='animeTitle' name='animeTitle' placeholder='Enter Title Here...' value='<?= $animeTitle ?>'>
                 <?php endif; ?>
                     
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='text' readonly class='form-control' id='lang' name='lang' placeholder='Language' value='<?= $lang ?>'>
+                    <h3 class='form-control' id='lang' name='lang' value='<?= $lang ?>'><?= $lang ?></h3>
                 <?php else: ?>
                     <input type='text' class='form-control' id='lang' name='lang' placeholder='Language' value='<?= $lang ?>'>
                 <?php endif; ?>
 
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='text' readonly class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
-                <?php else: ?>
-                    <input type="checkbox" id="genre" name="genre" value="Action">
-                    <label for="Action">Action</label>
-                    <input type="checkbox" id="genre" name="genre" value="Comedy">
-                    <label for="Comedy">Comedy</label>
-                    <input type="checkbox" id="genre" name="genre" value="Supernatural">
-                    <label for="Supernatural">Supernatural</label>
-                <?php endif; ?>
+                    <h3 class='form-control' id='genre' name='genre' value='<?= $genre ?>'><?= $genre ?></h3>
 
-                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='text' readonly class='form-control' id='picURL' name='picURL' placeholder='Picture URL Here' value='<?= $picURL ?>'>
                 <?php else: ?>
-                    <input type='text' class='form-control' id='picURL' name='picURL' placeholder='Picture URL Here' value='<?= $picURL ?>'>
+                    <input type='text' class='form-control' id='genre' name='genre' placeholder='genre' value='<?= $genre ?>'>
                 <?php endif; ?>
 
             </div>
+            
+            <div class='middle'>
+                <div class="aside">
+                    <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
+                        <h3 class='form-control' id='rating' name='rating' value='<?= $rating ?>'>Average Rating: <?= $rating ?>/5</h3>
+                    <?php else: ?>
+                        <input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57 event.charCode == 32' class='form-control' name='rating' placeholder='rating' value='<?= $rating ?>'>
+                    <?php endif; ?>
 
-        </div>
+                    <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
+                        <h3>Description:</h3>
+                        <h6 id='animeDesc' name='animeDesc' value='<?= $animeDesc ?>'><?= $animeDesc ?></h6>
+                    <?php else: ?>
+                        <textarea type='text' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></textarea>
+                    <?php endif; ?>
+                </div>
 
-        </div>
-        <br/>
-        <div class="form-group">
-            <div class='col-sm-10'>
-                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57' readonly class='form-control' name='rating' placeholder='rating' value='<?= $rating ?>'>
-                <?php else: ?>
-                    <input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57 event.charCode == 32' class='form-control' name='rating' placeholder='rating' value='<?= $rating ?>'>
-                <?php endif; ?>
+                <div class="picture">
+                    <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
+                            <img class="animePic" src="<?php echo $row['picURL']; ?>">
+                        <?php else: ?>
+                            <input type='text' class='form-control' id='picURL' name='picURL' placeholder='Picture URL Here' value='<?= $picURL ?>'>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
-        <br/>
-        <div class="form-group">
 
-            <div class='col-sm-10'>
+            <br>
 
-                <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
-                    <textarea type='text' readonly class='form-control' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'> <?= $animeDesc ?> </textarea>
-                <?php else: ?>
-                    <textarea type='text' class='form-control' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></textarea>
-                <?php endif; ?>
-            </div>
-
-
-        </div>
-        <br/>
-        
-        <div class='form-group'>
-
-            <div class='col-sm-offset-2 col-sm-10'>
+            <div class="container_btn">
+                
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <button type="submit" disabled style="display: none;" class='btn btn-primary'>Submit</button>
                 <?php else: ?>
@@ -252,7 +281,9 @@
                         echo "Failed to Add Record";
                     }
                 ?>
+                
             </div>
+
         </div>
     </form>
     

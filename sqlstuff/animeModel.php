@@ -11,7 +11,7 @@ include_once (__DIR__ . '/db.php');
     { //aquires the records values
         global $db;
         
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE 0=0";//selects the values from the anime table and sets it as a variable
 
         $results = [];
 
@@ -92,7 +92,7 @@ include_once (__DIR__ . '/db.php');
     { //aquires the records values
         global $db;
         
-        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE genreSelect = genre";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT animeID, animeTitle, rating, lang, genre, animeDesc, picURL, dateAdded FROM anime_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -172,7 +172,7 @@ include_once (__DIR__ . '/db.php');
     {//gets a specific record from the table
         global $db;
 
-        $sql = "SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email FROM user_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
+        $sql = "SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email, bio FROM user_lookup WHERE 0=0";//selects the values from the patients table and sets it as a variable
 
         $results = [];
 
@@ -291,7 +291,7 @@ include_once (__DIR__ . '/db.php');
         global $db;
 
         $result = [];
-        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt FROM user_lookup WHERE username=:bUsername");
+        $stmt = $db->prepare("SELECT userID, email, username, encPword, phoneNumber, pronouns, isActive, isAdmin, salt, bio FROM user_lookup WHERE username=:bUsername");
 
         $binds = array(//places the username into an array
             ":bUsername" => $username
@@ -314,7 +314,7 @@ include_once (__DIR__ . '/db.php');
         global $db;
 
         $result = [];
-        $stmt = $db->prepare("SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email FROM user_lookup WHERE userID=:bUserID");
+        $stmt = $db->prepare("SELECT userID, username, encPword, phoneNumber, pronouns, isActive, isAdmin, profilePic, salt, email, bio FROM user_lookup WHERE userID=:bUserID");
 
         $binds = array(//adds the anime id into an array
             ":bUserID" => $userID
@@ -328,11 +328,11 @@ include_once (__DIR__ . '/db.php');
         return($results);//returns results of search
     }
 
-    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email)
+    function addAUser($username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email, $bio)
     {//this function is used to add music into the table
 
         global $db;
-        $stmt = $db->prepare("INSERT INTO user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt");
+        $stmt = $db->prepare("INSERT INTO user_lookup SET email = :bEmail, username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt, bio = :bBio");
 
         $binds = array(//places values into an array
             ":bUsername" => $username,
@@ -343,7 +343,8 @@ include_once (__DIR__ . '/db.php');
             ":bIsAdmin" => $isAdmin,
             ":bProfilePic" => $profilePic,
             ":bSalt" => $salt,
-            ":bEmail" => $email
+            ":bEmail" => $email,
+            ":bBio" => $bio
         );
 
         if ($stmt->execute($binds) && $stmt->rowCount() > 0 )
@@ -354,13 +355,13 @@ include_once (__DIR__ . '/db.php');
         return ($results);//returns results
     }
 
-    function editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email)
+    function editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email, $bio)
     {//function used to update/edit music info
         global $db;
 
         $results = "";//set results to an empty string
 
-        $stmt = $db->prepare("UPDATE user_lookup SET username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt, email = :bEmail WHERE userID = :bUserID");
+        $stmt = $db->prepare("UPDATE user_lookup SET username = :bUsername, encPword = :bEncPword, phoneNumber = :bPhoneNumber, pronouns = :bPronouns, isActive = :bIsActive, isAdmin = :bIsAdmin, profilePic = :bProfilePic, salt = :bSalt, email = :bEmail, bio = :bBio WHERE userID = :bUserID");
 
         $binds = array(//places new values into the array
             ":bUserID" => $userID,
@@ -372,7 +373,8 @@ include_once (__DIR__ . '/db.php');
             ":bIsAdmin" => $isAdmin,
             ":bProfilePic" => $profilePic,
             ":bSalt" => $salt,
-            ":bEmail" => $email
+            ":bEmail" => $email,
+            ":bBio" => $bio
         );
 
         if ($stmt->execute($binds) AND $stmt->rowCount() > 0)

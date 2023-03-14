@@ -3,9 +3,6 @@
     include_once __DIR__ . '/sqlstuff/animeModel.php';
 
     $error = "";
-    function isPostRequest() {
-        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
-    }
 
     if(isset($_GET['action'])){
 
@@ -82,13 +79,13 @@
 
         if ($error != "") {
 
-            echo "<p class='error'>Please fix the following and resubmit</p>";
-            echo "<ul class='error'>$error</ul>";
+            echo "<p style='color:red'; class='error'>Please fix the following and resubmit</p>";
+            echo "<ul style='color:red'; class='error'>$error</ul>";
         }else{
             var_dump($_POST);
         $result = addAUser($username, sha1($encPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
 
-        header('Location: homePage.php'); 
+        header('Location: login.php'); 
         }
     }
 
@@ -100,76 +97,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Animedia - Signup</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <div class="container">
+    <div class="my-container-fluid">
 
-        <h2>Sign-Up</h2>
+        <h1 id="Title"> ANIMEDIA </h1>
+        
+        <h2 id="LogInTitle">Sign Up</h2>
 
-        <form class="col-lg-6 offset-lg-3" action = 'signup.php?action=create' method='post'>
+        <form class="Submissions" action = 'signup.php?action=create' method='post'>
 
             <input type='hidden' name='action' value='<?= $action ?>'>
             <input type='hidden' name='userID' value='<?= $userID ?>'>
 
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='email'>Email Address:</label>
+            <div class="d-flex justify-content-center">
+                <div class="mr-5 pr-5">
+                    <label style="color:#FFFFFF;" for='email'>Email Address:</label>
 
-                <div class='col-sm-10'>
-                    <input type='email' placeholder='Enter Field Here' class='form-control' id='email' name='email' value='<?= $email ?>'>
+                    <br>
+
+                    <input type='email' placeholder='Enter Field Here' class='textbox' id='email' name='email' value='<?= $email ?>'>
                 </div>
 
-                <label class='control-label col-sm-2' for='username'>Username:</label>
+                <div>
+                    <label style="color:#FFFFFF;" for='username'>Username:</label>
 
-                <div class='col-sm-10'>
-                    <input type='text' placeholder='Enter Field Here' class='form-control' id='username' name='username' value='<?= $username ?>' >
+                    <br>
+
+                    <input type='text' placeholder='Enter Field Here' class='textbox' id='username' name='username' value='<?= $username ?>' >
+
+                </div>
+            </div>
+
+            <br>
+
+            <div class="d-flex justify-content-center">
+                <div class="mr-5 pr-5">
+                    <label for="encPword" style="color:#FFFFFF;">Password:</label>
+                    
+                    <br>
+
+                    <input type='password' placeholder='Enter Field Here' class='textbox' id='encPword' name='encPword' value="<?=$encPword?>">
+                </div>
+
+                <div class="ml-5 pl-5">
+                    <label for="pwordValid" style="color:#FFFFFF;" > Retype Password: </label>
+                    
+                    <br>
+
+                    <input type="password" placeholder='Enter Field Here' id="pwordValid" name="pwordValid" class="textbox" value="">
                 </div>
 
             </div>
 
+            
             <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='encPword'>Password:</label>
-
-                <div class='col-sm-10'>
-                    <input type='password' placeholder='Enter Field Here' class='form-control' id='encPword' name='encPword' >
-                </div>
-                
-                <label class='control-label col-sm-2' for=''>Retype Password:</label>
-
-                <div class='col-sm-10'>
-                    <input type='password' placeholder='Enter Field Here' class='form-control' id='pwordValid' name='pwordValid' >
+            <div class="row justify-content-center">
+                <div class='col'>
+                    <label style="color:#FFFFFF;" for='phoneNumber'>Phone Number:</label>
+                    <br>
+                    <input type='number' placeholder='Enter Field Here' class='textbox' id='phoneNumber' name='phoneNumber' value='<?= $phoneNumber ?>'>
                 </div>
 
             </div>
             <br/>
-            <div class="form-group">
-                <label class='control-label col-sm-2' for='phoneNumber'>Phone Number:</label>
 
-                <div class='col-sm-10'>
-                    <input type='number' placeholder='Enter Field Here' class='form-control' id='phoneNumber' name='phoneNumber' value='<?= $phoneNumber ?>'>
-                </div>
+            <button type="submit" class='btn btn-dark'>Sign Up</button>
+            <br>
 
-            </div>
-            <br/>
-            <div class='form-group'>
-
-                <div class='col-sm-offset-2 col-sm-10'>
-
-                    <button type="submit" class='btn btn-primary'>Sign Up</button>
-
-                    <?php
-                        if(isPostRequest()){
-                            echo "Failed to Create Account";
-                        }
-                    ?>
-                </div>
-            </div>
+            <?php
+                if(isPostRequest()){
+                    echo "Failed to Create Account";
+                }
+            ?>
         </form>
 
         <br/><br/>
 
-        <a href='./login.php' class="btn btn-default">Back to Log-In Page</a>
+        <a href='./login.php' style="color:#FFFFFF;" class="btn btn-default">Back to Log-In Page</a>
     </div>
+    <br><br>
 </body>
 </html>
