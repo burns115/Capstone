@@ -480,9 +480,9 @@
   width: 100%;
   display: flex;
   padding: 0px;
-  border-right: #333333 2px solid;
+  /*border-right: #333333 2px solid;
   border-left: #333333 2px solid;
-  border-bottom: #333333 2px solid;
+  border-bottom: #333333 2px solid;*/
 
  }
 
@@ -512,7 +512,7 @@
 
  .display{
   background-color: #101010; 
-  width: 90%;
+  width: 100%;
  }
 
 

@@ -386,7 +386,7 @@
 
                                 <?php 
                                     if ($action == 'add'){
-                                        include_once __DIR__ . '/animeInfo.php';
+                                        include_once __DIR__ . '/addAnime.php';
                                     }
                                 ?>
                             </form>
