@@ -255,10 +255,9 @@
                         <h3>Description:</h3>
                         <h6 id='animeDesc' name='animeDesc' value='<?= $animeDesc ?>'><?= $animeDesc ?></h6>
 
-                       
-                    <?php elseif (  $action == 'add' AND $_SESSION['isAdmin'] == 1): ?>
+                    <?php else :?>
                         <br><br> 
-                        <input style="text-align: center; margin-left:10%;" type='text' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></input>
+                        <textarea style="margin-left:10%; width: 645px; height: 138px; color:white; background-color: #333333" type='text' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></textarea>
                     <?php endif; ?>
                 </div>
 
@@ -284,7 +283,7 @@
                 <?php
 
                     if(isPostRequest()){
-                        echo "Failed to Add Record";
+                        echo "Failed to Edit Record";
                     }
                 ?>
                 

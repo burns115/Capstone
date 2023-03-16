@@ -215,7 +215,7 @@
                 <!--Description box middle-->
                 <div class="display_last">
                     
-                    <textarea id="desc" class="desc" name="animeDesc"></textarea>
+                    <textarea id="desc" style="color:white; background-color: #333333" class="desc" name="animeDesc"></textarea>
                 
                 </div>
 

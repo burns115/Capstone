@@ -246,7 +246,7 @@
                 <!--Description box middle-->
                 <div class="display_last">
                     
-                    <textarea type='text' class='form-control' id='desc' name='bio' placeholder='Enter Bio Here...' value='<?= $bio ?>'><?= $bio ?></textarea>
+                    <textarea type='text' style="color:white; background-color: #333333" class='form-control' id='desc' name='bio' placeholder='Enter Bio Here...' value='<?= $bio ?>'><?= $bio ?></textarea>
                 
                 </div>
 
