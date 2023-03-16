@@ -1,6 +1,5 @@
 <?php 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
-    include_once __DIR__ . '/navbar.php';
     session_start();
 
     $searchUser = "";
@@ -140,6 +139,7 @@
             <input type="text" placeholder="Search for a User..." name="userInput">
         </form>
     </header>
+    <br><br><br><br><br>
     <h2 id="Users">Users</h2>
     <div class="user_container">
         <?php foreach ($records as $row): ?>

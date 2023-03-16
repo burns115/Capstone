@@ -7,7 +7,6 @@ session_start();
     }
 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
-    include_once __DIR__ . '/navbar.php';
 
     $searchTitle = "";
     $ratingFilter = "";

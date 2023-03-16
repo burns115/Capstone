@@ -7,7 +7,6 @@
     }
 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
-    include_once __DIR__ . '/navbar.php';
     $error = "";
 
     if(isset($_GET['action']))
