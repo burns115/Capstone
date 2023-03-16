@@ -127,9 +127,9 @@
                         <?php endif; ?>
                     </p>
                     <?php if ( $_SESSION['isAdmin'] == 1): ?>
-                        <p><a href='profile.php?action=edit&userID=<?=$row['userID']?>' class="btn text-dark"><button>Edit</button></a></p>
+                        <p><a href='editUser.php?action=edit&userID=<?=$row['userID']?>' class="btn text-dark"><button>Edit</button></a></p>
                     <?php else: ?>
-                        <a style="display: none;" href='profile.php?action=edit&userID=<?=$row['userID']?>' disabled class="btn text-dark"><button>Edit</button></a>
+                        <a style="display: none;" href='editUser.php?action=edit&userID=<?=$row['userID']?>' disabled class="btn text-dark"><button>Edit</button></a>
                     <?php endif; ?>
 
                     <a href='profile.php?action=view&userID=<?=$row['userID']?>' class="btn text-dark"><button>View Profile</button></a>

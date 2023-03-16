@@ -7,7 +7,6 @@
     }
 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
-    include_once __DIR__ . '/navbar.php';
     $error = "";
 
     if(isset($_GET['action']))
@@ -119,7 +118,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Animedia</title>
 
     <link rel="stylesheet" href="stylesheet.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -164,136 +163,91 @@
             <input type="text" placeholder="Search for an Anime..." name="titleInput">
         </form>
     </header>
-    <?=var_dump($_POST);?>
     <br><br><br><br>
 
-    <form class="col-lg-6 offset-lg-3" action = 'profile.php' method='post'>
+    <form action = 'editUser.php' method='post'>
 
         <input type='hidden' name='action' value='<?= $action ?>'>
         <input type='hidden' name='userID' value='<?= $userID ?>'>
         <br/>
-        
-        <div id="profile">
-        
-            <div class="container">
 
-                <div class="user">
+        <div class="settings-right">
+
+            <right class="display" style="color:#fff">
+
+                <p id="AddAnime">Edit User</p>
+
+                <!--Title Language Genre-->
+                <div class="display_first">
+                    <input type='text' id='animeTitle' name='username' placeholder='Enter Username Here...' value='<?= $username ?>'>
+
+                    <input type='text' id='lang' name='pronouns' placeholder='Enter Pronouns Here...' value='<?= $pronouns ?>'><br><br>
+
+                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                        <input type='text' class='form-control' id='lang' name='encPword' placeholder='Enter a Password...' value='<?= $encPword ?>'>
+                    <?php endif; ?>
+
+                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                        <input type='text' class='form-control' id='phoneNumber' name='phoneNumber' placeholder='Enter a Phone Number...' value='<?= $phoneNumber ?>'>
+                    <?php endif; ?>
                     
-                    <div class="u_pronouns">
+                </div>
+                <br>
+                <!--Rating, Anime Photo (url)-->
+                <div class="display_second">
 
-                        <?php if ( $action == 'view'): ?>
-                            <p id="user" readonly class='form-control' id='username' name='username'><?= $username ?></p>
-                        <?php else: ?>
-                            <input type='text' class='form-control' id='username' name='username' placeholder='Enter Username Here...' value='<?= $username ?>'>
-                        <?php endif; ?>
-
-                        <?php if ( $action == 'view'): ?>
-                            <p id="Pronouns"><?= $pronouns ?></p>
-                        <?php else: ?>
-                            <input type='text' class='form-control' id='pronouns' name='pronouns' placeholder='Enter Pronouns Here...' value='<?= $pronouns ?>'>
-                        <?php endif; ?>
-
-                        <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>
-                            <input type='text' style="display: none;" class='form-control' id='encPword' name='encPword' placeholder='Enter a Password...' value='<?= $encPword ?>'>
-                        <?php endif; ?>
-
-                        <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>
-                            <input type='text' class='form-control' id='phoneNumber' name='phoneNumber' placeholder='Enter a Phone Number...' value='<?= $phoneNumber ?>'>
-                        <?php endif; ?>
-
-                    </div>
-
-                    <br>
-
-                    <div id="align">
-
+                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
                         <?php if ($isAdmin == 1): ?>
-                            <p id="Membership">Admin</p>
-                        <?php elseif ($isAdmin == 0): ?>
-                            <p id="Membership">Basic Member</p>
-                        <?php endif; ?>
+                            <input type="radio" name="isAdmin" value="1" checked>Admin <input type="radio" name="isAdmin" value="0">Basic Member
 
-                        <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>
-                            <?php if ($isAdmin == 1): ?>
-                                <input type="radio" name="isAdmin" value="1" checked>Admin <input type="radio" name="isAdmin" value="0">Basic Member
+                        <?php elseif($isAdmin == 0): ?>
+                            <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0" checked>Basic Member
 
-                            <?php elseif($isAdmin == 0): ?>
-                                <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0" checked>Basic Member
+                        <?php else:?>
+                            <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0">Basic Member
 
-                            <?php else:?>
-                                <input type="radio" name="isAdmin" value="1">Admin <input type="radio" name="isAdmin" value="0">Basic Member
+                        <?php endif;?>
+                    <?php endif; ?>
+                    <br><br>
+                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
+                        <?php if ($isActive == 1): ?>
+                            <input type="radio" name="isActive" value="1" checked>Active <input type="radio" name="isActive" value="0">Inactive
 
-                            <?php endif;?>
-                        <?php endif; ?>
+                        <?php elseif($isActive == 0): ?>
+                            <input type="radio" name="isActive" value="1">Active <input type="radio" name="isActive" value="0" checked>Inactive
 
-                        <?php if ( $action == 'edit' AND $_SESSION['isAdmin'] == 1): ?>
-                            <?php if ($isActive == 1): ?>
-                                <input type="radio" name="isActive" value="1" checked>Active <input type="radio" name="isActive" value="0">Inactive
+                        <?php else:?>
+                            <input type="radio" name="isActive" value="1">Active <input type="radio" name="isActive" value="0">Inactive
 
-                            <?php elseif($isActive == 0): ?>
-                                <input type="radio" name="isActive" value="1">Active <input type="radio" name="isActive" value="0" checked>Inactive
-
-                            <?php else:?>
-                                <input type="radio" name="isActive" value="1">Active <input type="radio" name="isActive" value="0">Inactive
-
-                            <?php endif;?>
-                        <?php endif; ?>
-
-                    </div>
-
-                    <div>
-
-                    </div>
+                        <?php endif;?>
+                    <?php endif;?>
+                </div>
+                <br>
+                <!--Description box middle-->
+                <div class="display_last">
+                    
+                    <textarea type='text' class='form-control' id='desc' name='bio' placeholder='Enter Bio Here...' value='<?= $bio ?>'><?= $bio ?></textarea>
                 
                 </div>
 
-                <div>
-        
-                    <div class="user_display">
-
-                        <div class="bio">
-
-                            <h3 class="Bio_Title">Bio: </h3>
-                            <hr class="user_hr">
-                            <h4>
-                            <?php if ( $action == 'view'): ?>
-                                <?php if ($bio == ""):?>
-                                    <p id="bio">This person has not added a bio to their profile yet.</p>
-                                <?php else: ?>
-                                    <p id="bio"><?= $bio ?></p>
-                                <?php endif; ?>
-                            <?php else: ?>
-                                <textarea input type='text' class='form-control' id='bio' name='bio' placeholder='Enter Pronouns Here...' value='<?= $bio ?>'>
-                            <?php endif; ?>
-                            </h4>
-
-
-                        </div>
-
-        
-                    </div>
-
-                </div>
-
-                <div class='col-sm-offset-2 col-sm-10'>
-                    <?php if ( $action == 'view'): ?>
-                        <button type="submit" disabled style="display: none;" class='btn btn-primary'>Submit</button>
-                    <?php else: ?>
-                        <button type="submit" class='btn btn-primary'>Submit</button>
-                    <?php endif; ?>
+                
+                <div class="container_btn">
+            
+                    <button class="btn btn3">Submit</button>
 
                     <?php
 
-                        if(isPostRequest())
-                        {
-                            echo "Failed to Edit Profile";
+                        if(isPostRequest()){
+                            echo "Failed to Add Record";
                         }
                     ?>
+                        
                 </div>
                 
-            </div>
+            </right>
 
         </div>
+
     </form>
 
     <br><br><br><br><br><br><br>
@@ -349,8 +303,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
-
-
-    
 </body>
 </html>

@@ -203,7 +203,7 @@
     </header>
     <br><br>
 
-    <form class="col-lg-6 offset-lg-3" action = 'animeInfo.php' method='post'>
+    <form action = 'animeInfo.php' method='post'>
 
         <input type='hidden' name='action' value='<?= $action ?>'>
         <input type='hidden' name='animeID' value='<?= $animeID ?>'>

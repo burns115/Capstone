@@ -1,3 +1,154 @@
+<?php 
+    session_start();
+
+    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn']))
+    {
+        header('Location: login.php');
+    }
+
+    include_once __DIR__ . '/sqlstuff/animeModel.php';
+    $error = "";
+
+    if(isset($_GET['action']))
+    {
+        $action = filter_input(INPUT_GET, 'action');
+        $animeID = filter_input(INPUT_GET, 'animeID');
+    
+
+        if($action == "edit" OR $action == "view")
+        {
+            $row = getARecord($animeID);
+
+            $animeTitle = $row['animeTitle'];
+
+            $rating = $row['rating'];
+
+            $lang = $row['lang'];
+
+            $genre = $row['genre'];
+
+            $animeDesc = $row['animeDesc'];
+
+            $picURL = $row['picURL'];
+
+            $dateAdded = $row['dateAdded'];
+
+        }else
+        {
+            $animeTitle = filter_input(INPUT_POST, 'animeTitle');
+            if ($animeTitle == "") 
+            {
+                $error .= "<li>Enter the Anime Title</li>";
+            }   
+
+            $rating = filter_input(INPUT_POST, 'rating');
+            if ($rating == "") 
+            {
+                $error .= "<li>Enter the Rating</li>";
+            }
+            
+            $lang = filter_input(INPUT_POST, 'lang');
+            if ($lang == "") 
+            {
+                $error .= "<li>Select the Langauge(s)</li>";
+            }
+
+            $genre = filter_input(INPUT_POST, 'genre');
+            if ($genre == "") 
+            {
+                $error .= "<li>Select the Genre(s)</li>";
+            }
+            
+            $animeDesc = filter_input(INPUT_POST, 'animeDesc');
+            if ($animeDesc == "") 
+            {
+                $error .= "<li>Enter the Description</li>";
+            }
+            
+            $picURL = filter_input(INPUT_POST, 'picURL');
+            if ($picURL == "") 
+            {
+                $error .= "<li>Enter the Picture URL</li>";
+            }
+
+            $dateAdded = date('Y-m-d');
+        }
+
+    } elseif (isset($_POST['action']))
+    {
+        $action = filter_input(INPUT_POST, 'action');
+
+        $animeID = filter_input(INPUT_POST, 'animeID');
+        
+        $animeTitle = filter_input(INPUT_POST, 'animeTitle');
+        if ($animeTitle == "") 
+        {
+            $error .= "<li>Enter the Anime Title</li>";
+        }
+        
+        $rating = filter_input(INPUT_POST, 'rating');
+        if ($rating == "") 
+        {
+            $error .= "<li>Enter the Rating</li>";
+        }
+        
+        $lang = filter_input(INPUT_POST, 'lang');
+        if ($lang == "") 
+        {
+            $error .= "<li>Selects the Langauge(s)</li>";
+        }
+
+        $genre = filter_input(INPUT_POST, 'genre');
+        if ($genre == "") 
+        {
+            $error .= "<li>Selects the Genre(s)</li>";
+        }
+        
+        $animeDesc = filter_input(INPUT_POST, 'animeDesc');
+        if ($animeDesc == "") 
+        {
+            $error .= "<li>Enter the Description</li>";
+        }
+        
+        $picURL = filter_input(INPUT_POST, 'picURL');
+        if ($picURL == "") 
+        {
+            $error .= "<li>Enter the Picture URL</li>";
+        }
+
+        $dateAdded = filter_input(INPUT_POST, 'dateAdded');
+    }
+
+    if (isPostRequest() AND $action == 'add')
+    {
+        if ($error != "") 
+        {
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }else 
+        {
+            var_dump($_POST);
+            $result = addRecord($animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded); 
+
+            header('Location: homePage.php'); 
+        }
+
+    } elseif (isPostRequest() AND $action == 'edit')
+    {
+        if ($error != "") 
+        {
+            echo "<p class='error'>Please fix the following and resubmit</p>";
+            echo "<ul class='error'>$error</ul>";
+        }else 
+        {
+            var_dump($_POST);
+            $result = editRecord($animeID, $animeTitle, $rating, $lang, $genre, $animeDesc, $picURL, $dateAdded); 
+
+            header('Location: homepage.php');
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,47 +179,56 @@
 
 <body>
 
-    <div class="settings-right">
+    <form action = 'addAnime.php' method='post'>
 
-        <right class="display" style="color:#fff">
+        <div class="settings-right">
 
-            <p id="AddAnime">Add Anime</p>
+            <right class="display" style="color:#fff">
 
-            <!--Title Language Genre-->
-            <div class="display_first">
-                <input type="text" placeholder="Enter Title Here...">
+                <p id="AddAnime">Add Anime</p>
 
-                <input type="text" placeholder="Enter Language" id="lang">
+                <!--Title Language Genre-->
+                <div class="display_first">
+                    <input type="text" id='animeTitle' name='animeTitle' placeholder="Enter Title Here..." value='<?= $animeTitle ?>'>
 
-                <input type="text" placeholder="Enter Genre">
-            </div>
-            <br>
-            <!--Rating, Anime Photo (url)-->
-            <div class="display_second">
-                <input id="num" type="number" step="0.1" placeholder="Rating" min="0" max="5">
+                    <input type="text" name='lang' placeholder="Enter Language" id="lang" value='<?= $lang ?>'>
 
-                <input type="url" id="photoURL" placeholder="Photo URL">
-            </div>
-            <br>
-            <!--Description box middle-->
-            <div class="display_last">
-                
-                <textarea id="desc">
+                    <input type="text" name='genre' placeholder="Enter Genre" value='<?= $genre ?>'>
+                </div>
+                <br>
+                <!--Rating, Anime Photo (url)-->
+                <div class="display_second">
+                    <input id="num" type="number" step="0.1" name="rating" placeholder="Rating" min="0" max="5" value='<?= $rating ?>'>
 
-                </textarea>
-            
-            </div>
-
-            
-            <div class="container_btn">
-        
-                <button class="btn btn3">Submit</button>
+                    <input type="url" id="photoURL" name="picURL" placeholder="Photo URL" value='<?= $picURL ?>'>
+                </div>
+                <br>
+                <!--Description box middle-->
+                <div class="display_last">
                     
-            </div>
-            
-        </right>
+                    <textarea id="desc" name="animeDesc"></textarea>
+                
+                </div>
 
-    </div>
+                
+                <div class="container_btn">
+            
+                    <button class="btn btn3">Submit</button>
+
+                    <?php
+
+                        if(isPostRequest()){
+                            echo "Failed to Add Record";
+                        }
+                    ?>
+                        
+                </div>
+                
+            </right>
+
+        </div>
+
+    </form>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
