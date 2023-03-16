@@ -480,11 +480,25 @@
   width: 100%;
   display: flex;
   padding: 0px;
-  /*border-right: #333333 2px solid;
+  border-right: #333333 2px solid;
   border-left: #333333 2px solid;
-  border-bottom: #333333 2px solid;*/
+  border-bottom: #333333 2px solid;
 
  }
+
+ .settings-right{
+  text-align: center ;
+  background-color: #1F1F1F;
+  width: 100%;
+  display: flex;
+  padding: 0px;
+
+ }
+
+ #desc {
+  width: 561px;
+  height: 141px;
+}
 
  .content{
 

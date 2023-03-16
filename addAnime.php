@@ -28,7 +28,7 @@
 
 <body>
 
-    <div class="settings">
+    <div class="settings-right">
 
         <right class="display" style="color:#fff">
 
