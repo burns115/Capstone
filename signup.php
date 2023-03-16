@@ -38,6 +38,8 @@
 
         $salt = "";
 
+        $bio = "";
+
         $pwordValid = "";
 
         $isActive = 1;
@@ -83,7 +85,7 @@
             echo "<ul style='color:red'; class='error'>$error</ul>";
         }else{
             var_dump($_POST);
-        $result = addAUser($username, sha1($encPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email); 
+        $result = addAUser($username, sha1($encPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email, $bio); 
 
         header('Location: login.php'); 
         }

@@ -7,7 +7,8 @@
     }
 
     include_once __DIR__ . '/sqlstuff/animeModel.php';
-    include_once __DIR__ . '/navbar.php';
+    
+   
     $error = "";
 
     if(isset($_GET['action']))
@@ -203,16 +204,18 @@
     </header>
     <br><br>
 
-    <form action = 'animeInfo.php' method='post'>
+    <form class="col-lg-6 offset-lg-3" action = 'animeInfo.php' method='post'>
 
         <input type='hidden' name='action' value='<?= $action ?>'>
         <input type='hidden' name='animeID' value='<?= $animeID ?>'>
-        <br/>
+        <br/><br><br>
         <div id="anime">
 
             <div class='top'>
 
 
+
+                <!--This should be the text box of the thing-->
                 <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                     <input type="date" style="display: none;" value ="<?= $dateAdded ?>">
                 <?php else: ?> 
@@ -251,8 +254,11 @@
                     <?php if ( $action == 'view' OR $_SESSION['isAdmin'] == 0): ?>
                         <h3>Description:</h3>
                         <h6 id='animeDesc' name='animeDesc' value='<?= $animeDesc ?>'><?= $animeDesc ?></h6>
-                    <?php else: ?>
-                        <textarea type='text' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></textarea>
+
+                       
+                    <?php elseif (  $action == 'add' AND $_SESSION['isAdmin'] == 1): ?>
+                        <br><br> 
+                        <input style="text-align: center; margin-left:10%;" type='text' id='animeDesc' name='animeDesc' placeholder='Enter Description Here...' value='<?= $animeDesc ?>'><?= $animeDesc ?></input>
                     <?php endif; ?>
                 </div>
 

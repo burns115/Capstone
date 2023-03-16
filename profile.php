@@ -263,7 +263,7 @@
                                     <p id="bio"><?= $bio ?></p>
                                 <?php endif; ?>
                             <?php else: ?>
-                                <textarea input type='text' class='form-control' id='bio' name='bio' placeholder='Enter Pronouns Here...' value='<?= $bio ?>'>
+                                <type='text' class='form-control' id='bio' name='bio' placeholder='Enter Pronouns Here...' value='<?= $bio ?>'>
                             <?php endif; ?>
                             </h4>
 

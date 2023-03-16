@@ -179,13 +179,22 @@
 
 <body>
 
+    <style>
+
+        b{display : none;}
+
+        .desc {
+            width: 544px;
+            height: 115px;
+        }
+
+    </style>
+
     <form action = 'addAnime.php' method='post'>
 
         <div class="settings-right">
 
             <right class="display" style="color:#fff">
-
-                <p id="AddAnime">Add Anime</p>
 
                 <!--Title Language Genre-->
                 <div class="display_first">
@@ -206,7 +215,7 @@
                 <!--Description box middle-->
                 <div class="display_last">
                     
-                    <textarea id="desc" name="animeDesc"></textarea>
+                    <textarea id="desc" class="desc" name="animeDesc"></textarea>
                 
                 </div>
 

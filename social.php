@@ -51,6 +51,7 @@
         max-width: 175px;
         margin: auto;
         text-align: center;
+        
         }
 
         .card .title {
@@ -86,6 +87,31 @@
         float: left;
         width: 20%;
         padding: 0 10px;
+        }
+
+        .specific_user{
+            
+          
+            width: 50%;
+        }
+
+        .column{
+           
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .user_container{
+            border: 8px #333333 solid;
+            margin: auto;
+            background: #1F1F1F;
+            color: #fff;
+            font-family: 'Chathura' sans-serif;
+            font-size: 1em;
+            display: flex;
+            flex-wrap: wrap;
+            overflow-y: visible;
+            width: 80%;
         }
     </style>
 </head>

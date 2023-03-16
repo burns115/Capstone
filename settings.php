@@ -224,6 +224,12 @@
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
+
+<style>
+
+    b #text{display: none;}
+</style>
+
     <header>
         <a href="homePage.php" class="logo">Animedia</a>
         <div class="group">

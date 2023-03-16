@@ -105,7 +105,7 @@
             echo "<ul class='error'>$error</ul>";
         }else 
         {
-            $result = editAUser($userID, $username, $encPword, $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email, $bio); 
+            $result = editAUser($userID, $username, sha1($oldPword), $phoneNumber, $pronouns, $isActive, $isAdmin, $profilePic, $salt, $email, $bio); 
 
             header('Location: social.php');
         }
@@ -121,7 +121,7 @@
     <title>Animedia</title>
 
     <link rel="stylesheet" href="stylesheet.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chathura:wght@400;700&display=swap" rel="stylesheet">
 
@@ -135,9 +135,33 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
-    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
+
+    <style>
+
+        .display{ width : 100%;}
+
+        .settings{
+            text-align: center;
+            background-color: #1F1F1F;
+            width: 75%;
+            display: flex;
+            padding: 0px;
+            border-right: #333333 2px solid;
+            border-left: #333333 2px solid;
+            border-bottom: #333333 2px solid;
+            margin-right: auto;
+            margin-left: auto;
+            border-top: #333333 2px solid;
+        }
+
+        #desc {
+            width: 544px;
+            height: 115px;
+        }
+
+    </style>
 
     <header>
         <a href="homePage.php" class="logo">Animedia</a>
@@ -171,7 +195,7 @@
         <input type='hidden' name='userID' value='<?= $userID ?>'>
         <br/>
 
-        <div class="settings-right">
+        <div class="settings">
 
             <right class="display" style="color:#fff">
 
@@ -181,11 +205,7 @@
                 <div class="display_first">
                     <input type='text' id='animeTitle' name='username' placeholder='Enter Username Here...' value='<?= $username ?>'>
 
-                    <input type='text' id='lang' name='pronouns' placeholder='Enter Pronouns Here...' value='<?= $pronouns ?>'><br><br>
-
-                    <?php if ( $_SESSION['isAdmin'] == 1): ?>
-                        <input type='text' class='form-control' id='lang' name='encPword' placeholder='Enter a Password...' value='<?= $encPword ?>'>
-                    <?php endif; ?>
+                    <input type='text' id='lang' name='pronouns' placeholder='Enter Pronouns Here...' value='<?= $pronouns ?>'>
 
                     <?php if ( $_SESSION['isAdmin'] == 1): ?>
                         <input type='text' class='form-control' id='phoneNumber' name='phoneNumber' placeholder='Enter a Phone Number...' value='<?= $phoneNumber ?>'>

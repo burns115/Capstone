@@ -234,7 +234,23 @@ session_start();
                         </div>
                     </div>
 
-                    <input type="submit" value="Apply">
+                    <div id=filter_submit>
+
+                        <input style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1em;
+                        width: 20%;
+                        margin-left: auto;
+                        margin-right: auto;
+                        margin-top: 6%;
+
+
+                        "  type="submit" value="Apply" id="filter_submit">
+
+                    </div>
+                    
                 </form> 
             </div>
 
