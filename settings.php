@@ -3,6 +3,11 @@
     session_start();
     print_r($_SESSION);
 
+    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn']))
+    {
+        header('Location: login.php');
+    }
+
     $error = "";
     
     if(isset($_GET['action']))

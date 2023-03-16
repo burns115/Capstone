@@ -1,0 +1,23 @@
+USE XAMPP 
+PLACE THE FOLDER IN HTDOCS
+SHOULD BE C/xammp/htdocs
+
+RUN XAMPP CONTROL PANEL
+START APACHE
+CLICK ADMIN
+CLICK THE CAPSTONE FOLDER
+CLICK login.php
+OR ANY OF THE FILES IT'LL BRING YOU TO LOG IN ANYWAYS
+
+Ethan:
+login.php
+logout.php
+homePage.php
+navbar (the navabr in every file I was just really proud of it)
+social.php
+
+Ryan:
+Settings.php
+AddAnime.php
+AnimeInfo.php
+Results.php

@@ -2,6 +2,11 @@
     include_once __DIR__ . '/sqlstuff/animeModel.php';
     session_start();
 
+    if($_SESSION['loggedIn'] == FALSE OR !isset($_SESSION['loggedIn']))
+    {
+        header('Location: login.php');
+    }
+
     $searchUser = "";
 
     if(isPostRequest())
